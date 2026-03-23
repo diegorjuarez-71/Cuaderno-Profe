@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cuaderno de Profe</title>
 
@@ -16,13 +17,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <script>
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  âš™ï¸  CONFIGURACIÃ“N â€” REEMPLAZAR CON TUS DATOS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════
+//  ⚙️  CONFIGURACIÓN — REEMPLAZAR CON TUS DATOS
+// ══════════════════════════════════════════════════════
 const SUPABASE_URL  = 'https://wxjdgwfmhzkaiatgrkwi.supabase.co';
 const SUPABASE_KEY  = 'sb_publishable_34BNp_bomNUqyS_qCJ_CXA_4J3eIvbX';
-const ADMIN_SECRET  = 'admin1234ADMIN'; // vos la elegÃ­s
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const ADMIN_SECRET  = 'admin1234ADMIN'; // vos la elegís
+// ══════════════════════════════════════════════════════
 
 tailwind.config = {
   theme: {
@@ -174,9 +175,9 @@ tailwind.config = {
 
 <body x-data="mainApp()" :class="view==='login'?'login-bg':(view==='admin'?'admin-bg':'bg-sand grain')">
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ══════════════════════════════════════════════════════════════════
      PANTALLA DE LOGIN
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+══════════════════════════════════════════════════════════════════ -->
 <div x-show="view==='login'" x-transition.opacity class="min-h-screen flex items-center justify-center p-4">
   <div class="w-full max-w-md fade-up">
 
@@ -187,13 +188,13 @@ tailwind.config = {
       </div>
       <h1 class="font-display text-4xl text-white font-bold">cuaderno</h1>
       <h1 class="font-display text-4xl text-teal-mid font-light italic">de profe</h1>
-      <p class="text-gray-400 text-sm mt-2 tracking-widest uppercase">Constructor PedagÃ³gico</p>
+      <p class="text-gray-400 text-sm mt-2 tracking-widest uppercase">Constructor Pedag&oacute;gico</p>
     </div>
 
     <!-- Card de login -->
     <div class="login-card p-8">
-      <h2 class="text-white font-semibold text-lg mb-1">IngresÃ¡ tu cÃ³digo de acceso</h2>
-      <p class="text-gray-400 text-sm mb-6">Tu cÃ³digo fue enviado junto con tu compra</p>
+      <h2 class="text-white font-semibold text-lg mb-1">Ingres&aacute; tu c&oacute;digo de acceso</h2>
+      <p class="text-gray-400 text-sm mb-6">Tu c&oacute;digo fue enviado junto con tu compra</p>
 
       <div class="space-y-4">
         <input
@@ -223,7 +224,7 @@ tailwind.config = {
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
             </svg>
-            Verificandoâ€¦
+            Verificando…
           </span>
         </button>
       </div>
@@ -239,24 +240,24 @@ tailwind.config = {
     <!-- Info -->
     <div class="mt-6 grid grid-cols-3 gap-3 text-center">
       <div class="bg-white/5 rounded-xl p-3">
-        <div class="text-xl mb-1">ðŸ”’</div>
+        <div class="text-xl mb-1">🔒</div>
         <p class="text-xs text-gray-400">Acceso seguro</p>
       </div>
       <div class="bg-white/5 rounded-xl p-3">
-        <div class="text-xl mb-1">ðŸ“±</div>
+        <div class="text-xl mb-1">📱</div>
         <p class="text-xs text-gray-400">Cualquier dispositivo</p>
       </div>
       <div class="bg-white/5 rounded-xl p-3">
-        <div class="text-xl mb-1">ðŸ“¥</div>
+        <div class="text-xl mb-1">📥</div>
         <p class="text-xs text-gray-400">PDF descargable</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ══════════════════════════════════════════════════════════════════
      ADMIN LOGIN
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+══════════════════════════════════════════════════════════════════ -->
 <div x-show="view==='admin-login'" x-transition.opacity class="min-h-screen flex items-center justify-center p-4">
   <div class="w-full max-w-sm fade-up">
     <div class="login-card p-8">
@@ -272,21 +273,21 @@ tailwind.config = {
       <input x-model="adminKey" type="password"
         @keydown.enter="doAdminLogin()"
         class="code-input mb-4" style="letter-spacing:2px;font-size:1rem"
-        placeholder="ContraseÃ±a de admin">
+        placeholder="Contraseña de admin">
       <p x-show="adminErr" class="text-red-400 text-xs mb-3" x-text="adminErr"></p>
       <button @click="doAdminLogin()" class="btn-login mb-3">
         Entrar al panel
       </button>
       <button @click="view='login'" class="w-full py-2 text-gray-400 hover:text-white text-sm transition-colors">
-        â† Volver al login
+        ← Volver al login
       </button>
     </div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ══════════════════════════════════════════════════════════════════
      PANEL DE ADMIN
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+══════════════════════════════════════════════════════════════════ -->
 <div x-show="view==='admin'" x-transition.opacity class="min-h-screen p-6">
   <div class="max-w-5xl mx-auto">
 
@@ -298,7 +299,7 @@ tailwind.config = {
         </div>
         <div>
           <h1 class="font-display text-2xl text-white font-bold">Panel de Admin</h1>
-          <p class="text-gray-400 text-xs">GestiÃ³n de accesos Â· Cuaderno de Profe</p>
+          <p class="text-gray-400 text-xs">Gestión de accesos · Cuaderno de Profe</p>
         </div>
       </div>
       <button @click="view='login'; adminKey=''"
@@ -317,16 +318,16 @@ tailwind.config = {
       </template>
     </div>
 
-    <!-- Crear cÃ³digo -->
+    <!-- Crear c&oacute;digo -->
     <div class="admin-card p-5 mb-5">
       <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
         <i data-lucide="plus-circle" class="w-4 h-4 text-teal-mid"></i>
-        Crear nuevo cÃ³digo de acceso
+        Crear nuevo c&oacute;digo de acceso
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
         <div class="md:col-span-2">
           <label class="text-xs text-gray-400 uppercase tracking-wider block mb-1.5">Nombre del docente</label>
-          <input x-model="newUser.nombre" placeholder="Ej: MarÃ­a GarcÃ­a"
+          <input x-model="newUser.nombre" placeholder="Ej: María García"
             class="w-full px-3 py-2.5 bg-white/8 border border-white/15 rounded-xl text-white text-sm placeholder-gray-500 focus:outline-none focus:border-teal-mid">
         </div>
         <div>
@@ -335,7 +336,7 @@ tailwind.config = {
             class="w-full px-3 py-2.5 bg-white/8 border border-white/15 rounded-xl text-white text-sm placeholder-gray-500 focus:outline-none focus:border-teal-mid">
         </div>
         <div>
-          <label class="text-xs text-gray-400 uppercase tracking-wider block mb-1.5">CÃ³digo (o generar)</label>
+          <label class="text-xs text-gray-400 uppercase tracking-wider block mb-1.5">C&oacute;digo (o generar)</label>
           <div class="flex gap-2">
             <input x-model="newUser.codigo" placeholder="AUTO"
               class="flex-1 px-3 py-2.5 bg-white/8 border border-white/15 rounded-xl text-white text-sm font-mono placeholder-gray-500 focus:outline-none focus:border-teal-mid uppercase"
@@ -359,12 +360,12 @@ tailwind.config = {
       </div>
     </div>
 
-    <!-- Lista de cÃ³digos -->
+    <!-- Lista de c&oacute;digos -->
     <div class="admin-card overflow-hidden">
       <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between">
         <h3 class="text-white font-semibold flex items-center gap-2">
           <i data-lucide="users" class="w-4 h-4 text-teal-mid"></i>
-          CÃ³digos activos
+          C&oacute;digos activos
         </h3>
         <button @click="loadCodigos()"
           class="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors">
@@ -378,12 +379,12 @@ tailwind.config = {
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
         </svg>
-        Cargandoâ€¦
+        Cargando…
       </div>
 
       <!-- Sin datos -->
       <div x-show="!loadingCodigos && codigos.length===0" class="py-10 text-center text-gray-500 text-sm">
-        No hay cÃ³digos aÃºn. CreÃ¡ el primero arriba.
+        No hay c&oacute;digos a&uacute;n. Cre&aacute; el primero arriba.
       </div>
 
       <!-- Tabla -->
@@ -392,9 +393,9 @@ tailwind.config = {
           <thead>
             <tr class="border-b border-white/10">
               <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Docente</th>
-              <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">CÃ³digo</th>
+              <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">C&oacute;digo</th>
               <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Creado</th>
-              <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Ãšltimo acceso</th>
+              <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Último acceso</th>
               <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Estado</th>
               <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Acciones</th>
             </tr>
@@ -455,9 +456,9 @@ tailwind.config = {
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     APP PRINCIPAL (despuÃ©s del login)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════════════════════════════════════════════════════════
+     APP PRINCIPAL (después del login)
+══════════════════════════════════════════════════════════════════ -->
 <div x-show="view==='app'" x-transition.opacity>
 
   <!-- Header -->
@@ -484,7 +485,7 @@ tailwind.config = {
         </button>
         <button class="nav-tab" :class="appView==='notas'?'active':''" @click="appView='notas'; $nextTick(initLucide)">
           <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 inline mr-1"></i>
-          MÃ³dulo de Notas
+          Módulo de Notas
           <span class="ml-1.5 px-1.5 py-0.5 bg-teal/30 text-teal-mid text-[9px] font-bold rounded-full">BONUS</span>
         </button>
       </div>
@@ -493,7 +494,7 @@ tailwind.config = {
       <div class="flex items-center gap-3">
         <div class="hidden md:flex items-center gap-1.5 text-xs text-gray-400">
           <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
-          <span>SesiÃ³n activa</span>
+          <span>Sesión activa</span>
         </div>
         <button @click="logout()"
           class="flex items-center gap-1.5 px-3 py-1.5 bg-white/8 hover:bg-white/15 rounded-xl text-xs text-gray-300 font-medium transition-colors">
@@ -503,7 +504,7 @@ tailwind.config = {
     </div>
   </header>
 
-  <!-- â”€â”€ CONSTRUCTOR PDF â”€â”€ -->
+  <!-- ── CONSTRUCTOR PDF ── -->
   <div x-show="appView==='builder'" x-transition.opacity>
   <div class="max-w-7xl mx-auto px-4 md:px-6 py-8 grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-8 items-start">
 
@@ -515,7 +516,7 @@ tailwind.config = {
         <div class="bg-gradient-to-r from-teal to-teal-dark px-5 py-4">
           <div class="flex items-center gap-2 text-white">
             <i data-lucide="layout" class="w-4 h-4"></i>
-            <h2 class="font-semibold text-sm">ElegÃ­ tu portada</h2>
+            <h2 class="font-semibold text-sm">Elegí tu portada</h2>
           </div>
           <p class="text-teal-light text-xs mt-0.5 opacity-80">3 estilos + imagen propia</p>
         </div>
@@ -542,7 +543,7 @@ tailwind.config = {
             </template>
           </div>
           <!-- Upload -->
-          <div class="flex items-center gap-2"><div class="flex-1 h-px bg-sand-dark"></div><span class="text-xs text-gray-400">o subÃ­ tu imagen</span><div class="flex-1 h-px bg-sand-dark"></div></div>
+          <div class="flex items-center gap-2"><div class="flex-1 h-px bg-sand-dark"></div><span class="text-xs text-gray-400">o subí tu imagen</span><div class="flex-1 h-px bg-sand-dark"></div></div>
           <div class="rounded-xl border-2 border-dashed border-sand-dark cursor-pointer overflow-hidden hover:border-teal-mid transition-colors"
             @click="$refs.imgF.click()" @dragover.prevent @drop.prevent="loadImg($event.dataTransfer.files[0])">
             <div x-show="customImg"><img :src="customImg" class="w-full h-28 object-cover"></div>
@@ -550,8 +551,8 @@ tailwind.config = {
               <div class="w-9 h-9 rounded-xl bg-sand-dark flex items-center justify-center">
                 <i data-lucide="upload-cloud" class="w-5 h-5 text-teal"></i>
               </div>
-              <p class="text-sm font-medium text-ink">SubÃ­ tu portada propia</p>
-              <p class="text-xs text-gray-400">JPG, PNG Â· mÃ¡x 5MB</p>
+              <p class="text-sm font-medium text-ink">Subí tu portada propia</p>
+              <p class="text-xs text-gray-400">JPG, PNG · máx 5MB</p>
             </div>
           </div>
           <div x-show="customImg" class="flex gap-2">
@@ -559,7 +560,7 @@ tailwind.config = {
               class="flex-1 py-2 rounded-xl text-xs font-semibold transition-all"
               :class="selCover==='custom'?'bg-teal text-white':'bg-sand text-teal border border-teal hover:bg-teal-light'">
               <span x-show="selCover!=='custom'">Usar esta imagen</span>
-              <span x-show="selCover==='custom'">âœ“ Seleccionada</span>
+              <span x-show="selCover==='custom'">✓ Seleccionada</span>
             </button>
             <button @click.stop="customImg=null;selCover='teal'" class="px-3 py-2 rounded-xl bg-rose-light text-rose text-xs hover:bg-rose/20 border border-rose/20">
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
@@ -639,7 +640,7 @@ tailwind.config = {
             <div class="rounded-xl border-2 border-dashed border-sand-dark cursor-pointer p-4 text-center hover:border-teal-mid transition-colors"
               @click="$refs.xlsF.click()" @dragover.prevent @drop.prevent="parseAl($event.dataTransfer.files[0])">
               <i data-lucide="file-spreadsheet" class="w-6 h-6 text-teal-mid mx-auto mb-2"></i>
-              <p class="text-sm font-medium text-ink">SubÃ­ tu planilla Excel</p>
+              <p class="text-sm font-medium text-ink">Subí tu planilla Excel</p>
               <p class="text-xs text-gray-400 mt-0.5">.xlsx / .xls / .csv</p>
             </div>
             <button @click="dlTemplate()" class="mt-2 w-full text-center text-xs text-teal hover:text-teal-dark font-semibold flex items-center justify-center gap-1.5 py-2">
@@ -665,12 +666,12 @@ tailwind.config = {
                   <template x-for="(al,i) in alumnos.slice(0,6)" :key="i">
                     <tr :style="i%2===0?'background:#D6EEF2':'background:#fff'">
                       <td class="px-2 py-1 text-teal font-bold" x-text="i+1"></td>
-                      <td class="px-2 py-1 font-medium text-ink" x-text="al.apellidos||'â€”'"></td>
-                      <td class="px-2 py-1 text-ink" x-text="al.nombre||'â€”'"></td>
+                      <td class="px-2 py-1 font-medium text-ink" x-text="al.apellidos||'—'"></td>
+                      <td class="px-2 py-1 text-ink" x-text="al.nombre||'—'"></td>
                     </tr>
                   </template>
                   <tr x-show="alumnos.length>6" style="background:#F5F0E8">
-                    <td colspan="3" class="px-2 py-1.5 text-center text-gray-400 text-xs" x-text="'+ '+(alumnos.length-6)+' mÃ¡s...'"></td>
+                    <td colspan="3" class="px-2 py-1.5 text-center text-gray-400 text-xs" x-text="'+ '+(alumnos.length-6)+' más...'"></td>
                   </tr>
                 </tbody>
               </table>
@@ -700,7 +701,7 @@ tailwind.config = {
             <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-            </svg>Generandoâ€¦
+            </svg>Generando…
           </span>
         </button>
         <p class="text-center text-xs text-gray-400"><i data-lucide="lock" class="w-3 h-3 inline mr-1"></i>Procesado en tu dispositivo. Sin servidor.</p>
@@ -714,22 +715,22 @@ tailwind.config = {
         <div class="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-teal-mid opacity-10"></div>
         <div class="relative z-10 flex items-start justify-between flex-wrap gap-4">
           <div>
-            <p class="text-teal-mid text-xs font-semibold tracking-widest uppercase mb-2">Tu cuaderno Â· <span x-text="fd.anio"></span></p>
+            <p class="text-teal-mid text-xs font-semibold tracking-widest uppercase mb-2">Tu cuaderno · <span x-text="fd.anio"></span></p>
             <h2 class="font-display text-4xl text-white font-semibold">
               <span x-show="fd.nombre" x-text="fd.nombre"></span>
-              <span x-show="!fd.nombre" class="italic text-gray-500">Tu nombre aquÃ­</span>
+              <span x-show="!fd.nombre" class="italic text-gray-500">Tu nombre aquí</span>
             </h2>
             <p class="text-gray-400 text-sm mt-1.5">
               <span x-show="fd.escuela||fd.materia">
-                <span x-text="fd.escuela"></span><span x-show="fd.escuela&&fd.materia"> Â· </span><span x-text="fd.materia"></span>
+                <span x-text="fd.escuela"></span><span x-show="fd.escuela&&fd.materia"> · </span><span x-text="fd.materia"></span>
               </span>
-              <span x-show="!fd.escuela&&!fd.materia" class="text-gray-600">CompletÃ¡ tus datos</span>
+              <span x-show="!fd.escuela&&!fd.materia" class="text-gray-600">Completá tus datos</span>
             </p>
           </div>
           <div class="flex gap-6">
             <div class="text-center">
               <div class="font-display text-4xl italic text-teal-mid" x-text="totalPags"></div>
-              <div class="text-gray-500 text-xs uppercase tracking-wider mt-0.5">pÃ¡ginas</div>
+              <div class="text-gray-500 text-xs uppercase tracking-wider mt-0.5">páginas</div>
             </div>
             <div class="text-center">
               <div class="font-display text-4xl italic text-teal-mid" x-text="secs.filter(s=>s.on).length+1"></div>
@@ -777,18 +778,18 @@ tailwind.config = {
   </div>
   </div>
 
-  <!-- â”€â”€ MÃ“DULO DE NOTAS (BONUS) â”€â”€ -->
+  <!-- ── MÓDULO DE NOTAS (BONUS) ── -->
   <div x-show="appView==='notas'" x-transition.opacity>
   <div class="max-w-full px-4 md:px-6 py-6 space-y-5">
 
     <!-- Banner bonus -->
     <div class="bg-gradient-to-r from-teal-dark to-ink rounded-2xl p-5 flex items-center gap-4 border border-teal/30">
       <div class="w-10 h-10 rounded-xl bg-teal flex items-center justify-center flex-shrink-0">
-        <span class="text-lg">ðŸŽ</span>
+        <span class="text-lg">🎁</span>
       </div>
       <div>
-        <p class="text-white font-semibold text-sm">MÃ³dulo de Notas â€” Incluido como regalo</p>
-        <p class="text-teal-mid text-xs mt-0.5">RegistrÃ¡ notas, calculÃ¡ promedios y exportÃ¡ a Excel. Todo en un solo lugar.</p>
+        <p class="text-white font-semibold text-sm">Módulo de Notas — Incluido como regalo</p>
+        <p class="text-teal-mid text-xs mt-0.5">Registrá notas, calculá promedios y exportá a Excel. Todo en un solo lugar.</p>
       </div>
     </div>
 
@@ -844,15 +845,15 @@ tailwind.config = {
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-2">Manual (uno por lÃ­nea)</label>
-          <textarea x-model="alTxt" placeholder="GarcÃ­a, MarÃ­a&#10;RodrÃ­guez, Lucas" class="w-full h-28 px-3 py-2.5 bg-sand rounded-xl border border-sand-dark text-sm focus:outline-none focus:border-teal resize-none placeholder-gray-300"></textarea>
+          <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-2">Manual (uno por línea)</label>
+          <textarea x-model="alTxt" placeholder="García, María&#10;Rodríguez, Lucas" class="w-full h-28 px-3 py-2.5 bg-sand rounded-xl border border-sand-dark text-sm focus:outline-none focus:border-teal resize-none placeholder-gray-300"></textarea>
           <button @click="cargarAlTxt()" class="mt-2 w-full py-2.5 bg-teal text-white text-sm font-semibold rounded-xl hover:bg-teal-dark transition-colors">Cargar lista</button>
         </div>
         <div>
           <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-2">Desde Excel</label>
           <div class="rounded-xl border-2 border-dashed border-sand-dark cursor-pointer p-5 text-center h-28 flex flex-col items-center justify-center gap-2 hover:border-teal-mid transition-colors" @click="$refs.alXls2.click()">
             <i data-lucide="file-spreadsheet" class="w-6 h-6 text-teal-mid"></i>
-            <p class="text-sm text-gray-400">SubÃ­ el Excel de alumnos</p>
+            <p class="text-sm text-gray-400">Subí el Excel de alumnos</p>
           </div>
           <input type="file" accept=".xlsx,.xls,.csv" x-ref="alXls2" class="hidden" @change="e=>{parseAl(e.target.files[0]);e.target.value='';}">
           <div x-show="alumnos.length>0" class="mt-2 flex items-center justify-between bg-teal-light rounded-xl px-3 py-2">
@@ -869,7 +870,7 @@ tailwind.config = {
         <i data-lucide="users" class="w-8 h-8 text-teal-mid"></i>
       </div>
       <p class="font-semibold text-ink mb-1">Sin alumnos cargados</p>
-      <p class="text-sm text-gray-400 mb-5">CargÃ¡ la lista para empezar a registrar notas</p>
+      <p class="text-sm text-gray-400 mb-5">Cargá la lista para empezar a registrar notas</p>
       <button @click="loadDemo()" class="px-5 py-2.5 bg-teal text-white text-sm font-semibold rounded-xl hover:bg-teal-dark transition-colors">
         Cargar alumnos de ejemplo
       </button>
@@ -881,7 +882,7 @@ tailwind.config = {
         <div class="flex items-center gap-2">
           <i data-lucide="grid" class="w-4 h-4 text-teal"></i>
           <h2 class="font-semibold text-sm text-ink"
-            x-text="etapa===4?'Resumen Final':(etLabels[etapa-1]+(etapa<3?' â€” 4 notas por materia':' â€” '+nEt3+' notas'))">
+            x-text="etapa===4?'Resumen Final':(etLabels[etapa-1]+(etapa<3?' — 4 notas por materia':' — '+nEt3+' notas'))">
           </h2>
         </div>
         <div x-show="etapa===3" class="flex items-center gap-2">
@@ -925,18 +926,18 @@ tailwind.config = {
                 <template x-for="(mat,mi) in mats" :key="mi">
                   <template x-for="(_,ni) in Array(etapa===3?nEt3:4)" :key="ni">
                     <td class="px-1 py-1.5 text-center">
-                      <input type="number" min="1" max="10" step="0.1" class="nota-input" :class="nCls(gN(ai,mi,ni))" :value="gN(ai,mi,ni)" @input="sN(ai,mi,ni,$event.target.value)" placeholder="â€”">
+                      <input type="number" min="1" max="10" step="0.1" class="nota-input" :class="nCls(gN(ai,mi,ni))" :value="gN(ai,mi,ni)" @input="sN(ai,mi,ni,$event.target.value)" placeholder="—">
                     </td>
                   </template>
                   <td class="px-1 py-1.5 text-center border-l border-sand-dark">
                     <span class="prom" :class="pCls(pMat(ai,mi))">
-                      <span x-text="pMat(ai,mi)>0?pMat(ai,mi).toFixed(1):'â€”'"></span>
+                      <span x-text="pMat(ai,mi)>0?pMat(ai,mi).toFixed(1):'—'"></span>
                     </span>
                   </td>
                 </template>
                 <td class="px-2 py-1.5 text-center sticky right-0" :class="ai%2===0?'bg-white':'bg-sand/40'">
                   <span class="prom font-display italic text-sm" :class="pCls(pGen(ai))">
-                    <span x-text="pGen(ai)>0?pGen(ai).toFixed(2):'â€”'"></span>
+                    <span x-text="pGen(ai)>0?pGen(ai).toFixed(2):'—'"></span>
                   </span>
                 </td>
               </tr>
@@ -947,17 +948,17 @@ tailwind.config = {
               <td class="col-al px-4 py-2.5 font-bold text-teal-mid text-sm sticky left-0" style="background:#1A1A2E">Promedio grupo</td>
               <template x-for="(mat,mi) in mats" :key="mi">
                 <template x-for="(_,ni) in Array(etapa===3?nEt3:4)" :key="ni">
-                  <td class="px-1 py-2.5 text-center"><span class="text-gray-600 text-xs">â€”</span></td>
+                  <td class="px-1 py-2.5 text-center"><span class="text-gray-600 text-xs">—</span></td>
                 </template>
                 <td class="px-1 py-2.5 text-center border-l border-white/10">
                   <span class="prom" :class="pCls(pGrupoMat(mi))">
-                    <span x-text="pGrupoMat(mi)>0?pGrupoMat(mi).toFixed(1):'â€”'"></span>
+                    <span x-text="pGrupoMat(mi)>0?pGrupoMat(mi).toFixed(1):'—'"></span>
                   </span>
                 </td>
               </template>
               <td class="px-2 py-2.5 text-center sticky right-0" style="background:#1A1A2E">
                 <span class="prom font-display italic text-sm" :class="pCls(pGrupoGen)">
-                  <span x-text="pGrupoGen>0?pGrupoGen.toFixed(2):'â€”'"></span>
+                  <span x-text="pGrupoGen>0?pGrupoGen.toFixed(2):'—'"></span>
                 </span>
               </td>
             </tr>
@@ -990,19 +991,19 @@ tailwind.config = {
                   <td class="px-2 py-2.5 text-center">
                     <div class="space-y-0.5">
                       <div class="flex items-center justify-center gap-1 text-[10px] text-gray-400">
-                        <span x-text="'C1:'+(pEt(ai,mi,1)>0?pEt(ai,mi,1).toFixed(1):'â€”')"></span>
-                        <span x-text="'C2:'+(pEt(ai,mi,2)>0?pEt(ai,mi,2).toFixed(1):'â€”')"></span>
-                        <span x-text="'EI:'+(pEt(ai,mi,3)>0?pEt(ai,mi,3).toFixed(1):'â€”')"></span>
+                        <span x-text="'C1:'+(pEt(ai,mi,1)>0?pEt(ai,mi,1).toFixed(1):'—')"></span>
+                        <span x-text="'C2:'+(pEt(ai,mi,2)>0?pEt(ai,mi,2).toFixed(1):'—')"></span>
+                        <span x-text="'EI:'+(pEt(ai,mi,3)>0?pEt(ai,mi,3).toFixed(1):'—')"></span>
                       </div>
                       <span class="prom" :class="pCls(pMatF(ai,mi))">
-                        <span x-text="pMatF(ai,mi)>0?pMatF(ai,mi).toFixed(2):'â€”'"></span>
+                        <span x-text="pMatF(ai,mi)>0?pMatF(ai,mi).toFixed(2):'—'"></span>
                       </span>
                     </div>
                   </td>
                 </template>
                 <td class="px-2 py-2.5 text-center sticky right-0" :class="ai%2===0?'bg-white':'bg-sand/40'">
                   <span class="prom font-display italic text-base px-3 py-1.5" :class="pCls(pFinalAl(ai))">
-                    <span x-text="pFinalAl(ai)>0?pFinalAl(ai).toFixed(2):'â€”'"></span>
+                    <span x-text="pFinalAl(ai)>0?pFinalAl(ai).toFixed(2):'—'"></span>
                   </span>
                 </td>
               </tr>
@@ -1014,13 +1015,13 @@ tailwind.config = {
               <template x-for="(mat,mi) in mats" :key="mi">
                 <td class="px-2 py-3 text-center">
                   <span class="prom" :class="pCls(pGrupoMatF(mi))">
-                    <span x-text="pGrupoMatF(mi)>0?pGrupoMatF(mi).toFixed(2):'â€”'"></span>
+                    <span x-text="pGrupoMatF(mi)>0?pGrupoMatF(mi).toFixed(2):'—'"></span>
                   </span>
                 </td>
               </template>
               <td class="px-2 py-3 text-center sticky right-0" style="background:#1A1A2E">
                 <span class="prom font-display italic text-base px-3" :class="pCls(pGrupoFinal)">
-                  <span x-text="pGrupoFinal>0?pGrupoFinal.toFixed(2):'â€”'"></span>
+                  <span x-text="pGrupoFinal>0?pGrupoFinal.toFixed(2):'—'"></span>
                 </span>
               </td>
             </tr>
@@ -1050,9 +1051,9 @@ tailwind.config = {
 
 </div><!-- /app view -->
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ══════════════════════════════════════════════════════════════════
      SCRIPT
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+══════════════════════════════════════════════════════════════════ -->
 <script>
 function initLucide() {
   if (window.lucide?.createIcons) lucide.createIcons();
@@ -1061,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', initLucide);
 document.addEventListener('alpine:initialized', initLucide);
 window.addEventListener('load', () => setTimeout(initLucide, 250));
 
-// â”€â”€ Supabase client â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Supabase client ────────────────────────────────────────────────
 let sb = null;
 function getSupabase() {
   if (!sb && window.supabase) {
@@ -1070,20 +1071,20 @@ function getSupabase() {
   return sb;
 }
 
-// â”€â”€ Generate access code â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Generate access code ───────────────────────────────────────────
 function genAccessCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const part = (n) => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
   return `PROFE-${part(4)}-${part(4)}`;
 }
 
-// â”€â”€ Excel template â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Excel template ─────────────────────────────────────────────────
 function dlTemplateXlsx() {
-  if (!window.XLSX) { alert('Cargandoâ€¦'); return; }
+  if (!window.XLSX) { alert('Cargando…'); return; }
   const wb = XLSX.utils.book_new();
-  const hdrs = ['NÂ°','Apellidos','Nombre','DNI','Fecha nacimiento','GÃ©nero','DirecciÃ³n','TelÃ©fono familiar','Email familiar','Nombre padre/tutor','TelÃ©fono padre','Nombre madre/tutor','TelÃ©fono madre','Email contacto','Necesidades especiales','Observaciones'];
-  const data = [['âš ï¸ No modifiques esta fila. CargÃ¡ datos desde fila 3.'], hdrs,
-    [1,'GarcÃ­a','MarÃ­a','12345678','15/03/2010','Femenino','Av. Corrientes 1234','11-2345-6789','fam@mail.com','Juan GarcÃ­a','11-9876-5432','Ana LÃ³pez','11-1111-2222','contacto@mail.com','Alergia al manÃ­','Muy participativa']];
+  const hdrs = ['N°','Apellidos','Nombre','DNI','Fecha nacimiento','Género','Dirección','Teléfono familiar','Email familiar','Nombre padre/tutor','Teléfono padre','Nombre madre/tutor','Teléfono madre','Email contacto','Necesidades especiales','Observaciones'];
+  const data = [['⚠️ No modifiques esta fila. Cargá datos desde fila 3.'], hdrs,
+    [1,'García','María','12345678','15/03/2010','Femenino','Av. Corrientes 1234','11-2345-6789','fam@mail.com','Juan García','11-9876-5432','Ana López','11-1111-2222','contacto@mail.com','Alergia al maní','Muy participativa']];
   for (let i = 2; i <= 35; i++) data.push([i]);
   const ws = XLSX.utils.aoa_to_sheet(data);
   ws['!cols'] = [{wch:4},{wch:20},{wch:18},{wch:12},{wch:16},{wch:12},{wch:28},{wch:16},{wch:24},{wch:20},{wch:16},{wch:20},{wch:16},{wch:24},{wch:30},{wch:28}];
@@ -1091,7 +1092,7 @@ function dlTemplateXlsx() {
   XLSX.writeFile(wb, 'plantilla_alumnos.xlsx');
 }
 
-// â”€â”€ Main app â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Main app ───────────────────────────────────────────────────────
 function mainApp() {
   return {
     // Navigation
@@ -1116,14 +1117,14 @@ function mainApp() {
     codigoCopiado: null,
     mensajeDocente: '',
 
-    // â”€â”€ LOGIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── LOGIN ────────────────────────────────────────────────────
     async doLogin() {
       if (!this.loginCode) return;
       this.loggingIn = true;
       this.loginErr  = '';
       try {
         const client = getSupabase();
-        if (!client) throw new Error('Sin conexiÃ³n a Supabase');
+        if (!client) throw new Error('Sin conexión a Supabase');
 
         const { data, error } = await client
           .from('codigos_acceso')
@@ -1133,12 +1134,12 @@ function mainApp() {
           .single();
 
         if (error || !data) {
-          this.loginErr = 'CÃ³digo invÃ¡lido o inactivo. VerificÃ¡ tu cÃ³digo e intentÃ¡ de nuevo.';
+          this.loginErr = 'C&oacute;digo inválido o inactivo. Verific&aacute; tu c&oacute;digo e intent&aacute; de nuevo.';
           this.loggingIn = false;
           return;
         }
 
-        // Actualizar Ãºltimo acceso
+        // Actualizar último acceso
         await client
           .from('codigos_acceso')
           .update({ ultimo_acceso: new Date().toISOString() })
@@ -1149,7 +1150,7 @@ function mainApp() {
         this.$nextTick(initLucide);
 
       } catch (err) {
-        this.loginErr = 'Error de conexiÃ³n. IntentÃ¡ nuevamente.';
+        this.loginErr = 'Error de conexión. Intentá nuevamente.';
         console.error(err);
       }
       this.loggingIn = false;
@@ -1162,7 +1163,7 @@ function mainApp() {
       this.$nextTick(initLucide);
     },
 
-    // â”€â”€ ADMIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── ADMIN ────────────────────────────────────────────────────
     doAdminLogin() {
       if (this.adminKey === ADMIN_SECRET) {
         this.view     = 'admin';
@@ -1170,14 +1171,14 @@ function mainApp() {
         this.loadCodigos();
         this.$nextTick(initLucide);
       } else {
-        this.adminErr = 'ContraseÃ±a incorrecta';
+        this.adminErr = 'Contraseña incorrecta';
       }
     },
 
     genCode() { return genAccessCode(); },
 
     formatDate(d) {
-      if (!d) return 'â€”';
+      if (!d) return '—';
       return new Date(d).toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
     },
 
@@ -1187,7 +1188,7 @@ function mainApp() {
       const usados   = this.codigos.filter(c=>c.ultimo_acceso).length;
       const inactivos= this.codigos.filter(c=>!c.activo).length;
       return [
-        { label:'Total cÃ³digos',  val:total,    color:'text-white' },
+        { label:'Total c&oacute;digos',  val:total,    color:'text-white' },
         { label:'Activos',        val:activos,  color:'text-green-400' },
         { label:'Usados',         val:usados,   color:'text-teal-mid' },
         { label:'Desactivados',   val:inactivos,color:'text-red-400' },
@@ -1220,14 +1221,14 @@ function mainApp() {
             activo:  true,
           });
         if (error) throw error;
-        this.adminMsg    = `âœ“ CÃ³digo creado: ${this.newUser.codigo}`;
+        this.adminMsg    = `✓ C&oacute;digo creado: ${this.newUser.codigo}`;
         this.adminMsgOk  = true;
         this.codigoCopiado = { ...this.newUser };
         this.mensajeDocente = this.buildMsg(this.newUser);
         this.newUser = { nombre:'', email:'', codigo:'' };
         await this.loadCodigos();
       } catch(e) {
-        this.adminMsg   = 'Error: ' + (e.message || 'cÃ³digo duplicado');
+        this.adminMsg   = 'Error: ' + (e.message || 'c&oacute;digo duplicado');
         this.adminMsgOk = false;
       }
       this.creando = false;
@@ -1248,15 +1249,15 @@ function mainApp() {
 
     buildMsg(u) {
       const url = window.location.href;
-      return `Hola ${u.nombre}! ðŸ‘‹\n\nTu acceso al Cuaderno de Profe estÃ¡ listo.\n\nðŸ”‘ Tu cÃ³digo: ${u.codigo}\nðŸŒ IngresÃ¡ en: ${url}\n\nðŸ“Œ Pasos:\n1. AbrÃ­ el link\n2. IngresÃ¡ tu cÃ³digo\n3. Â¡DescargÃ¡ tu cuaderno en PDF!\n\nAnte cualquier duda, respondÃ© este mensaje. âœ¨`;
+      return `Hola ${u.nombre}! 👋\n\nTu acceso al Cuaderno de Profe está listo.\n\n🔑 Tu c&oacute;digo: ${u.codigo}\n🌐 Ingres&aacute; en: ${url}\n\n📌 Pasos:\n1. Abrí el link\n2. Ingres&aacute; tu c&oacute;digo\n3. ¡Descargá tu cuaderno en PDF!\n\nAnte cualquier duda, respondé este mensaje. ✨`;
     },
 
     copiarMensaje() {
       navigator.clipboard.writeText(this.mensajeDocente)
-        .then(()=>alert('Â¡Mensaje copiado! Listo para pegar en WhatsApp.'));
+        .then(()=>alert('¡Mensaje copiado! Listo para pegar en WhatsApp.'));
     },
 
-    // â”€â”€ BUILDER STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── BUILDER STATE ────────────────────────────────────────────
     selCover: 'teal',
     customImg: null,
     customImgData: null,
@@ -1265,7 +1266,7 @@ function mainApp() {
     pLabel: '',
 
     covers: [
-      { id:'teal', name:'Teal clÃ¡sico',   grad:'linear-gradient(135deg,#1d5a66,#2E7D8C)' },
+      { id:'teal', name:'Teal clásico',   grad:'linear-gradient(135deg,#1d5a66,#2E7D8C)' },
       { id:'dark', name:'Noche elegante', grad:'linear-gradient(135deg,#1A1A2E,#2d3561)' },
       { id:'rose', name:'Rosa pastel',    grad:'linear-gradient(135deg,#a05560,#C0717C)' },
     ],
@@ -1273,25 +1274,25 @@ function mainApp() {
     fd: { nombre:'', escuela:'', materia:'', anio:'2025 / 2026' },
 
     fields: [
-      { key:'nombre',  label:'Nombre del/la docente', type:'text',   ph:'Ej: MarÃ­a GonzÃ¡lez' },
-      { key:'escuela', label:'InstituciÃ³n / Escuela',  type:'text',   ph:'Ej: Escuela NÂ° 123' },
-      { key:'materia', label:'Materia / Asignatura',   type:'text',   ph:'Ej: MatemÃ¡ticas' },
-      { key:'anio',    label:'AÃ±o escolar', type:'select', opts:['2025 / 2026','2026 / 2027','2027 / 2028'] },
+      { key:'nombre',  label:'Nombre del/la docente', type:'text',   ph:'Ej: María González' },
+      { key:'escuela', label:'Institución / Escuela',  type:'text',   ph:'Ej: Escuela N° 123' },
+      { key:'materia', label:'Materia / Asignatura',   type:'text',   ph:'Ej: Matemáticas' },
+      { key:'anio',    label:'Año escolar', type:'select', opts:['2025 / 2026','2026 / 2027','2027 / 2028'] },
     ],
 
     secs: [
-      { id:'cal',   name:'Calendario anual',      desc:'12 meses',              icon:'ðŸ“…', pages:1, on:true,  color:'#2E7D8C', short:'CALEND.' },
-      { id:'sem',   name:'PlanificaciÃ³n semanal', desc:'L-D con espacio',       icon:'ðŸ“†', pages:1, on:true,  color:'#5BA8B5', short:'SEMANAL' },
-      { id:'hor',   name:'Horario del curso',     desc:'Grilla por horas',      icon:'ðŸ•', pages:1, on:true,  color:'#3d6b8c', short:'HORARIO' },
-      { id:'fich',  name:'Ficha de alumno',       desc:'Datos + notas',         icon:'ðŸ§‘â€ðŸŽ“', pages:1, on:true,  color:'#C0717C', short:'FICHA'  },
-      { id:'notas', name:'Registro de notas',     desc:'3 evaluaciones',        icon:'ðŸ“Š', pages:3, on:true,  color:'#4a9e7c', short:'NOTAS'  },
-      { id:'asist', name:'Control asistencia',    desc:'Grilla 31 dÃ­as',        icon:'âœ…', pages:1, on:true,  color:'#8b6fb5', short:'ASIST.' },
-      { id:'reun',  name:'Acta de reuniÃ³n',       desc:'Claustro + tutorÃ­as',   icon:'ðŸ¤', pages:2, on:true,  color:'#c08050', short:'REUNIÃ“N' },
-      { id:'obj',   name:'Objetivos anuales',     desc:'Por trimestre',         icon:'ðŸŽ¯', pages:1, on:false, color:'#2d7a5c', short:'OBJETIV.' },
-      { id:'fech',  name:'Fechas importantes',    desc:'Por mes',               icon:'ðŸ“Œ', pages:1, on:false, color:'#7a7a9a', short:'FECHAS' },
-      { id:'chk',   name:'Lista de tareas',       desc:'Con checkboxes',        icon:'â˜‘ï¸', pages:1, on:false, color:'#5b8a5b', short:'TAREAS' },
-      { id:'com',   name:'Comunicaciones',        desc:'Registro familias',     icon:'ðŸ“¨', pages:1, on:false, color:'#8c5a2E', short:'COMUNI.' },
-      { id:'libre', name:'Notas libres',          desc:'Cuadriculada',          icon:'ðŸ“', pages:1, on:true,  color:'#aaaaaa', short:'NOTAS'  },
+      { id:'cal',   name:'Calendario anual',      desc:'12 meses',              icon:'📅', pages:1, on:true,  color:'#2E7D8C', short:'CALEND.' },
+      { id:'sem',   name:'Planificación semanal', desc:'L-D con espacio',       icon:'📆', pages:1, on:true,  color:'#5BA8B5', short:'SEMANAL' },
+      { id:'hor',   name:'Horario del curso',     desc:'Grilla por horas',      icon:'🕐', pages:1, on:true,  color:'#3d6b8c', short:'HORARIO' },
+      { id:'fich',  name:'Ficha de alumno',       desc:'Datos + notas',         icon:'🧑‍🎓', pages:1, on:true,  color:'#C0717C', short:'FICHA'  },
+      { id:'notas', name:'Registro de notas',     desc:'3 evaluaciones',        icon:'📊', pages:3, on:true,  color:'#4a9e7c', short:'NOTAS'  },
+      { id:'asist', name:'Control asistencia',    desc:'Grilla 31 días',        icon:'✅', pages:1, on:true,  color:'#8b6fb5', short:'ASIST.' },
+      { id:'reun',  name:'Acta de reunión',       desc:'Claustro + tutorías',   icon:'🤝', pages:2, on:true,  color:'#c08050', short:'REUNIÓN' },
+      { id:'obj',   name:'Objetivos anuales',     desc:'Por trimestre',         icon:'🎯', pages:1, on:false, color:'#2d7a5c', short:'OBJETIV.' },
+      { id:'fech',  name:'Fechas importantes',    desc:'Por mes',               icon:'📌', pages:1, on:false, color:'#7a7a9a', short:'FECHAS' },
+      { id:'chk',   name:'Lista de tareas',       desc:'Con checkboxes',        icon:'☑️', pages:1, on:false, color:'#5b8a5b', short:'TAREAS' },
+      { id:'com',   name:'Comunicaciones',        desc:'Registro familias',     icon:'📨', pages:1, on:false, color:'#8c5a2E', short:'COMUNI.' },
+      { id:'libre', name:'Notas libres',          desc:'Cuadriculada',          icon:'📝', pages:1, on:true,  color:'#aaaaaa', short:'NOTAS'  },
     ],
 
     alumnos: [],
@@ -1302,7 +1303,7 @@ function mainApp() {
 
     loadImg(f) {
       if (!f) return;
-      if (f.size > 5*1024*1024) { alert('Imagen demasiado grande (mÃ¡x 5MB)'); return; }
+      if (f.size > 5*1024*1024) { alert('Imagen demasiado grande (máx 5MB)'); return; }
       const r = new FileReader();
       r.onload = e => { this.customImg = e.target.result; this.customImgData = e.target.result; this.selCover = 'custom'; this.$nextTick(initLucide); };
       r.readAsDataURL(f);
@@ -1337,11 +1338,11 @@ function mainApp() {
       r.readAsArrayBuffer(file);
     },
 
-    // â”€â”€ PDF (abbreviated - same as before) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── PDF (abbreviated - same as before) ──────────────────────
     async genPDF() {
       this.generating = true;
       const sp = (p,l) => { this.pPct=p; this.pLabel=l; };
-      sp(3,'Iniciandoâ€¦');
+      sp(3,'Iniciando…');
       await new Promise(r=>setTimeout(r,40));
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
@@ -1356,7 +1357,7 @@ function mainApp() {
       const dot=(x1,y1,x2,y2)=>{const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),steps=Math.floor(len/3.5);sf('#CCCCCC');for(let i=0;i<=steps;i++){const t=i/Math.max(steps,1);doc.circle(x1+t*dx,y1+t*dy,.35,'F');}};
       const secT=(txt,sub='')=>{st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(txt,12,18);if(sub){doc.setFontSize(7);doc.setFont('helvetica','normal');st('#888');doc.text(sub,W/2,18,{align:'center'});}sf(pal.bg);doc.rect(12,20,W-24,.5,'F');};
 
-      sp(8,'Portadaâ€¦');
+      sp(8,'Portada…');
       if(this.selCover==='custom'&&this.customImgData){
         doc.addImage(this.customImgData,'JPEG',0,0,W,H);
         doc.setGState(doc.GState({opacity:.72}));sf('#000000');doc.rect(0,H*.58,W,H*.42,'F');doc.setGState(doc.GState({opacity:1}));
@@ -1373,16 +1374,16 @@ function mainApp() {
         doc.setFont('helvetica','normal');doc.setFontSize(52);doc.text('de profe',W/2,H*.56,{align:'center'});
         doc.setFontSize(17);doc.text(anio,W/2,H*.64,{align:'center'});
         if(nom){doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text(nom,W/2,H*.74,{align:'center'});}
-        if(esc||mat){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text([esc,mat].filter(Boolean).join('  Â·  '),W/2,H*.79,{align:'center'});}
+        if(esc||mat){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text([esc,mat].filter(Boolean).join('  ·  '),W/2,H*.79,{align:'center'});}
       }
       doc.addPage();
 
-      sp(13,'Datosâ€¦');
+      sp(13,'Datos…');
       sf(pal.light);doc.rect(0,0,7,H,'F');sf(pal.bg);doc.rect(0,H-10,W,10,'F');
       st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('DATOS DEL/LA DOCENTE',12,22);
       sf(pal.bg);doc.rect(12,24,W-24,.5,'F');
       let dy=36;
-      [['Nombre y apellidos',nom],['InstituciÃ³n',esc],['Materia',mat],['AÃ±o escolar',anio],['TelÃ©fono',''],['Email',''],['Aula','']].forEach(([l,v])=>{
+      [['Nombre y apellidos',nom],['Institución',esc],['Materia',mat],['Año escolar',anio],['Teléfono',''],['Email',''],['Aula','']].forEach(([l,v])=>{
         st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(l,12,dy);
         if(v){st('#333');doc.setFont('helvetica','normal');doc.text(v,12,dy+5);}
         ss('#CCCCCC');doc.setLineWidth(.4);doc.line(12,dy+7,W-12,dy+7);dy+=16;
@@ -1393,7 +1394,7 @@ function mainApp() {
       const active=this.secs.filter(s=>s.on);
       for(let si=0;si<active.length;si++){
         const s=active[si];
-        sp(14+Math.round(si/active.length*78),`Generando: ${s.name}â€¦`);
+        sp(14+Math.round(si/active.length*78),`Generando: ${s.name}…`);
         await new Promise(r=>setTimeout(r,15));
 
         if(s.id==='cal'){
@@ -1410,34 +1411,34 @@ function mainApp() {
           doc.addPage();
         }
         if(s.id==='sem'){
-          secT('PLANIFICACIÃ“N SEMANAL','Semana del _______ al _______   Â·   Mes: ___________');
-          const days=['lunes','martes','miÃ©rcoles','jueves','viernes'],cw=(W-24)/5,topY=26,botY=H-30;
+          secT('PLANIFICACIÓN SEMANAL','Semana del _______ al _______   ·   Mes: ___________');
+          const days=['lunes','martes','miércoles','jueves','viernes'],cw=(W-24)/5,topY=26,botY=H-30;
           days.forEach((d,i)=>{const bx=12+i*cw;sf(pal.bg);doc.rect(bx,topY,cw-1.5,6,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(d,bx+(cw-1.5)/2,topY+4.2,{align:'center'});sf('#FFF');ss('#DDD');doc.setLineWidth(.35);doc.rect(bx,topY+6,cw-1.5,botY-topY-6,'FD');let ly=topY+12;while(ly<botY-4){dot(bx+1,ly,bx+cw-3,ly);ly+=6;}});
-          ['sÃ¡bado','domingo'].forEach((d,i)=>{const bx=12+i*(W-24)/2,sw=(W-24)/2;const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);doc.rect(bx,botY+2,sw-1.5,6,'F');st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(d,bx+(sw-1.5)/2,botY+5.8,{align:'center'});sf('#FFF');ss('#DDD');doc.setLineWidth(.35);doc.rect(bx,botY+8,sw-1.5,20,'FD');});
+          ['sábado','domingo'].forEach((d,i)=>{const bx=12+i*(W-24)/2,sw=(W-24)/2;const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);doc.rect(bx,botY+2,sw-1.5,6,'F');st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(d,bx+(sw-1.5)/2,botY+5.8,{align:'center'});sf('#FFF');ss('#DDD');doc.setLineWidth(.35);doc.rect(bx,botY+8,sw-1.5,20,'FD');});
           doc.addPage();
         }
         if(s.id==='hor'){
           secT('HORARIO DEL CURSO  '+anio);
-          const cols=['HORAS','lunes','martes','miÃ©rcoles','jueves','viernes'],cw=(W-24)/6,topY=24,nrows=12,rh=(H-40)/nrows;
+          const cols=['HORAS','lunes','martes','miércoles','jueves','viernes'],cw=(W-24)/6,topY=24,nrows=12,rh=(H-40)/nrows;
           cols.forEach((col,ci)=>{const bx=12+ci*cw;if(ci===0){const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);}else sf(pal.bg);doc.rect(bx,topY,cw,6,'F');if(ci===0)st('#1A1A2E');else st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(7);doc.text(col,bx+cw/2,topY+4.2,{align:'center'});});
           for(let ri=0;ri<nrows;ri++){const ry=topY+6+ri*rh;cols.forEach((_,ci)=>{const bx=12+ci*cw;if(ci===0){const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);}else if(ri%2===0)doc.setFillColor(248,250,252);else doc.setFillColor(255,255,255);ss('#DDD');doc.setLineWidth(.25);doc.rect(bx,ry,cw,rh,'FD');});}
           doc.addPage();
         }
         if(s.id==='fich'){
-          sf(pal.bg);doc.roundedRect(12,10,22,14,2,2,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('NÂ°1',23,18.5,{align:'center'});
+          sf(pal.bg);doc.roundedRect(12,10,22,14,2,2,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('N°1',23,18.5,{align:'center'});
           st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);
           ['Nombre y apellidos:','Curso / grupo:','Fecha nac.:','Necesidades:'].forEach((l,i)=>{const y=17+i*8;doc.text(l,38,y);ss('#CCC');doc.setLineWidth(.4);doc.line(38,y+2,W-12,y+2);});
-          ['Contacto 1','Contacto 2'].forEach((t,ci)=>{const x=12+ci*(W-24)/2;st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(t,x,52);['Nombre:','TelÃ©fono:','Email:'].forEach((l,i)=>{const y=59+i*9;st('#444');doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text(l,x,y);ss('#CCC');doc.setLineWidth(.4);doc.line(x+18,y+1,x+90,y+1);});});
+          ['Contacto 1','Contacto 2'].forEach((t,ci)=>{const x=12+ci*(W-24)/2;st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(t,x,52);['Nombre:','Teléfono:','Email:'].forEach((l,i)=>{const y=59+i*9;st('#444');doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text(l,x,y);ss('#CCC');doc.setLineWidth(.4);doc.line(x+18,y+1,x+90,y+1);});});
           st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('Calificaciones',12,120);sf(pal.bg);doc.rect(12,122,W-24,.4,'F');
-          const evals=['1Âª EVA','2Âª EVA','3Âª EVA','FINAL'],acw=60,ecw=(W-24-acw)/evals.length;
+          const evals=['1ª EVA','2ª EVA','3ª EVA','FINAL'],acw=60,ecw=(W-24-acw)/evals.length;
           evals.forEach((e,ei)=>{const bx=12+acw+ei*ecw;sf(ei<3?pal.bg:pal.acc);doc.rect(bx,124,ecw,5,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(6);doc.text(e,bx+ecw/2,127.5,{align:'center'});});
           for(let ri=0;ri<10;ri++){const ry=129+ri*5.5;const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);ss('#DDD');doc.setLineWidth(.25);doc.rect(12,ry,acw,5.5,'FD');evals.forEach((_,ei)=>doc.rect(12+acw+ei*ecw,ry,ecw,5.5,'FD'));}
           st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('Observaciones',12,192);sf(pal.bg);doc.rect(12,194,W-24,.4,'F');sf('#FFF');ss('#DDD');doc.setLineWidth(.4);doc.rect(12,196,W-24,88,'FD');for(let i=0;i<12;i++)dot(14,204+i*7,W-14,204+i*7);
           doc.addPage();
         }
         if(s.id==='notas'){
-          ['1Âª','2Âª','3Âª'].forEach((ev,pi)=>{
-            secT(`REGISTRO DE NOTAS  â€”  ${ev} EVALUACIÃ“N`,`Asignatura: ${mat||'___________'}   Â·   AÃ±o: ${anio}`);
+          ['1ª','2ª','3ª'].forEach((ev,pi)=>{
+            secT(`REGISTRO DE NOTAS  —  ${ev} EVALUACIÓN`,`Asignatura: ${mat||'___________'}   ·   Año: ${anio}`);
             const labels=['Trabajos','Tareas','Ctrl 1','Ctrl 2','Examen','Actitud','Nota Final','Recup.'],nw=50,cw=(W-24-nw)/labels.length,topY=30,nrows=35,rh=(H-46)/nrows;
             labels.forEach((l,ci)=>{const bx=12+nw+ci*cw;sf(ci<6?pal.bg:pal.acc);doc.rect(bx,topY,cw,6,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(5);doc.text(l,bx+cw/2,topY+4.2,{align:'center'});});
             for(let ri=0;ri<nrows;ri++){const ry=topY+6+ri*rh;const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);ss('#DDD');doc.setLineWidth(.2);doc.rect(12,ry,6,rh,'FD');st('#AAA');doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.text(String(ri+1),15,ry+rh*.65,{align:'center'});doc.rect(18,ry,nw-6,rh,'FD');if(this.alumnos[ri]){st('#333');doc.setFont('helvetica','normal');doc.setFontSize(6);const nc=[this.alumnos[ri].apellidos,this.alumnos[ri].nombre].filter(Boolean).join(', ');doc.text(nc.substring(0,28),19,ry+rh*.65);}labels.forEach((_,ci)=>doc.rect(12+nw+ci*cw,ry,cw,rh,'FD'));}
@@ -1446,16 +1447,16 @@ function mainApp() {
           doc.addPage();
         }
         if(s.id==='asist'){
-          secT('CONTROL DE ASISTENCIA','Mes: ___________   Â·   Curso: _______   Â·   '+anio);
+          secT('CONTROL DE ASISTENCIA','Mes: ___________   ·   Curso: _______   ·   '+anio);
           const nrows=35,ndays=31,nw=50,dw=(W-24-nw)/ndays,topY=24,rh=(H-40)/nrows;
           for(let d=0;d<ndays;d++){const bx=12+nw+d*dw;sf(pal.bg);doc.rect(bx,topY,dw,5,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(4.5);doc.text(String(d+1),bx+dw/2,topY+3.5,{align:'center'});}
           for(let ri=0;ri<nrows;ri++){const ry=topY+5+ri*rh;const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);ss('#DDD');doc.setLineWidth(.2);doc.rect(12,ry,6,rh,'FD');st('#AAA');doc.setFont('helvetica','normal');doc.setFontSize(5);doc.text(String(ri+1),15,ry+rh*.65,{align:'center'});doc.rect(18,ry,nw-6,rh,'FD');if(this.alumnos[ri]){st('#333');doc.setFont('helvetica','normal');doc.setFontSize(6);const nc=[this.alumnos[ri].apellidos,this.alumnos[ri].nombre].filter(Boolean).join(', ');doc.text(nc.substring(0,26),19,ry+rh*.65);}for(let d=0;d<ndays;d++)doc.rect(12+nw+d*dw,ry,dw,rh,'FD');}
           doc.addPage();
         }
         if(s.id==='reun'){
-          ['REUNIÃ“N DE CLAUSTRO','TUTORÃA â€” ENTREVISTA A FAMILIAS'].forEach((tipo,ti)=>{
+          ['REUNIÓN DE CLAUSTRO','TUTORÍA — ENTREVISTA A FAMILIAS'].forEach((tipo,ti)=>{
             secT(tipo);let my=30;
-            [['Curso:','Ciclo:','EvaluaciÃ³n:'],['Fecha:','Hora:','']].forEach(row=>{const fw=(W-24)/3;row.forEach((l,ci)=>{if(!l)return;const x=12+ci*fw;st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(l,x,my);ss('#CCC');doc.setLineWidth(.4);doc.line(x+18,my+2,x+fw-4,my+2);});my+=10;});
+            [['Curso:','Ciclo:','Evaluación:'],['Fecha:','Hora:','']].forEach(row=>{const fw=(W-24)/3;row.forEach((l,ci)=>{if(!l)return;const x=12+ci*fw;st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(l,x,my);ss('#CCC');doc.setLineWidth(.4);doc.line(x+18,my+2,x+fw-4,my+2);});my+=10;});
             [['Temas a tratar',38],['Desarrollo',60],['Conclusiones',50]].forEach(([t,bh])=>{my+=4;st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(t,12,my);my+=4;sf('#FFF');ss('#DDD');doc.setLineWidth(.4);doc.rect(12,my,W-24,bh,'FD');for(let i=0;i<Math.floor(bh/7)-1;i++)dot(14,my+8+i*7,W-14,my+8+i*7);my+=bh+4;});
             if(ti===0)doc.addPage();
           });
@@ -1493,23 +1494,23 @@ function mainApp() {
         }
       }
 
-      sp(97,'Finalizandoâ€¦');
+      sp(97,'Finalizando…');
       doc.deletePage(doc.internal.getNumberOfPages());
       await new Promise(r=>setTimeout(r,30));
-      sp(100,'Â¡Listo!');
+      sp(100,'¡Listo!');
       doc.save(`cuaderno_${nom.replace(/\s+/g,'_').toLowerCase()}.pdf`);
       await new Promise(r=>setTimeout(r,900));
       this.generating=false; this.pPct=0;
     },
 
-    // â”€â”€ NOTAS STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── NOTAS STATE ──────────────────────────────────────────────
     etapa: 1,
-    etLabels: ['1Â° Cuatrimestre','2Â° Cuatrimestre','Etapa Integradora','Resumen Final'],
+    etLabels: ['1° Cuatrimestre','2° Cuatrimestre','Etapa Integradora','Resumen Final'],
     nEt3: 2,
     showMatConf: false,
     showAlConf: false,
     alTxt: '',
-    mats: ['MatemÃ¡ticas','Lengua','Cs. Naturales','Cs. Sociales'],
+    mats: ['Matemáticas','Lengua','Cs. Naturales','Cs. Sociales'],
     notas: {},
 
     get pGrupoGen() { if(!this.alumnos.length)return 0; const ps=this.alumnos.map((_,ai)=>this.pGen(ai)).filter(p=>p>0); return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0; },
@@ -1519,10 +1520,10 @@ function mainApp() {
       const ps=this.alumnos.map((_,ai)=>this.pFinalAl(ai)).filter(p=>p>0);
       const ap=ps.filter(p=>p>=6).length,ri=ps.filter(p=>p>=4&&p<6).length,ds=ps.filter(p=>p<4&&p>0).length,mx=ps.length?Math.max(...ps):0;
       return [
-        {label:'Aprobados',val:ap||'â€”',icon:'âœ…',bg:'#dcfce7',color:'text-green-600',sub:`de ${this.alumnos.length}`},
-        {label:'En riesgo',val:ri||'â€”',icon:'âš ï¸',bg:'#fef3c7',color:'text-yellow-600',sub:'entre 4 y 5.9'},
-        {label:'Desaprobados',val:ds||'â€”',icon:'âŒ',bg:'#fee2e2',color:'text-red-600',sub:'menos de 4'},
-        {label:'Mejor nota',val:mx>0?mx.toFixed(1):'â€”',icon:'ðŸ†',bg:'#D6EEF2',color:'text-teal',sub:'promedio mÃ¡s alto'},
+        {label:'Aprobados',val:ap||'—',icon:'✅',bg:'#dcfce7',color:'text-green-600',sub:`de ${this.alumnos.length}`},
+        {label:'En riesgo',val:ri||'—',icon:'⚠️',bg:'#fef3c7',color:'text-yellow-600',sub:'entre 4 y 5.9'},
+        {label:'Desaprobados',val:ds||'—',icon:'❌',bg:'#fee2e2',color:'text-red-600',sub:'menos de 4'},
+        {label:'Mejor nota',val:mx>0?mx.toFixed(1):'—',icon:'🏆',bg:'#D6EEF2',color:'text-teal',sub:'promedio más alto'},
       ];
     },
 
@@ -1540,7 +1541,7 @@ function mainApp() {
     pGrupoMatF(mi){const ps=this.alumnos.map((_,ai)=>this.pMatF(ai,mi)).filter(p=>p>0);return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;},
 
     cargarAlTxt(){const lines=this.alTxt.split('\n').map(l=>l.trim()).filter(l=>l);this.alumnos=lines.map(l=>{const p=l.split(',');return p.length>=2?{apellidos:p[0].trim(),nombre:p[1].trim()}:{apellidos:l,nombre:''};});this.notas={};this.showAlConf=false;},
-    loadDemo(){this.alumnos=[{apellidos:'GarcÃ­a',nombre:'MarÃ­a'},{apellidos:'RodrÃ­guez',nombre:'Lucas'},{apellidos:'MartÃ­nez',nombre:'SofÃ­a'},{apellidos:'LÃ³pez',nombre:'JoaquÃ­n'},{apellidos:'FernÃ¡ndez',nombre:'Valentina'},{apellidos:'GonzÃ¡lez',nombre:'Mateo'}];this.notas={};const rnd=(...a)=>{let x=Math.sin(a.reduce((s,v)=>s+v,0))*10000;return x-Math.floor(x);};this.alumnos.forEach((_,ai)=>{this.iN(ai);this.mats.forEach((_,mi)=>{[1,2].forEach(et=>{if(!this.notas[ai][mi][et])this.notas[ai][mi][et]={};for(let ni=0;ni<4;ni++)this.notas[ai][mi][et][ni]=parseFloat(Math.min(10,Math.max(1,(rnd(ai+1,mi+1,et,ni)*5+5.5))).toFixed(1));});if(!this.notas[ai][mi][3])this.notas[ai][mi][3]={};for(let ni=0;ni<2;ni++)this.notas[ai][mi][3][ni]=parseFloat(Math.min(10,Math.max(1,(rnd(ai+1,mi+1,3,ni)*4+6))).toFixed(1));});});this.showAlConf=false;},
+    loadDemo(){this.alumnos=[{apellidos:'García',nombre:'María'},{apellidos:'Rodríguez',nombre:'Lucas'},{apellidos:'Martínez',nombre:'Sofía'},{apellidos:'López',nombre:'Joaquín'},{apellidos:'Fernández',nombre:'Valentina'},{apellidos:'González',nombre:'Mateo'}];this.notas={};const rnd=(...a)=>{let x=Math.sin(a.reduce((s,v)=>s+v,0))*10000;return x-Math.floor(x);};this.alumnos.forEach((_,ai)=>{this.iN(ai);this.mats.forEach((_,mi)=>{[1,2].forEach(et=>{if(!this.notas[ai][mi][et])this.notas[ai][mi][et]={};for(let ni=0;ni<4;ni++)this.notas[ai][mi][et][ni]=parseFloat(Math.min(10,Math.max(1,(rnd(ai+1,mi+1,et,ni)*5+5.5))).toFixed(1));});if(!this.notas[ai][mi][3])this.notas[ai][mi][3]={};for(let ni=0;ni<2;ni++)this.notas[ai][mi][3][ni]=parseFloat(Math.min(10,Math.max(1,(rnd(ai+1,mi+1,3,ni)*4+6))).toFixed(1));});});this.showAlConf=false;},
 
     exportNotasXls(){
       const wb=XLSX.utils.book_new();
