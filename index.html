@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuaderno de Profe · App Completa</title>
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        teal:  { DEFAULT:'#2E7D8C', light:'#D6EEF2', mid:'#5BA8B5', dark:'#1d5a66' },
+        sand:  { DEFAULT:'#F5F0E8', dark:'#E8E0D0' },
+        rose:  { DEFAULT:'#C0717C', light:'#FAE8EA' },
+        ink:   { DEFAULT:'#1A1A2E' },
+      },
+      fontFamily: {
+        display: ['Cormorant Garamond','serif'],
+        body:    ['Outfit','sans-serif'],
+      }
+    }
+  }
+}
+</script>
+
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Outfit',sans-serif; background:#F5F0E8; }
+  ::-webkit-scrollbar { width:5px; height:5px; }
+  ::-webkit-scrollbar-track { background:#F5F0E8; }
+  ::-webkit-scrollbar-thumb { background:#5BA8B5; border-radius:3px; }
+
+  /* ── Animations ─────────────────────────────────────────────── */
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+  @keyframes shimmer  { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .fade-up  { animation:fadeUp .45s ease both; }
+  .fade-in  { animation:fadeIn .3s ease both; }
+
+  /* ── Cover cards ─────────────────────────────────────────────── */
+  .cover-card { transition:all .25s cubic-bezier(.4,0,.2,1); cursor:pointer; }
+  .cover-card:hover { transform:translateY(-4px) scale(1.02); }
+  .cover-card.selected { outline:3px solid #2E7D8C; outline-offset:3px; transform:translateY(-4px) scale(1.02); }
+
+  /* ── Section check items ─────────────────────────────────────── */
+  .sec-item { transition:all .18s; cursor:pointer; }
+  .sec-item:hover { border-color:#5BA8B5 !important; background:#D6EEF2 !important; }
+  .sec-item.active { border-color:#2E7D8C !important; background:linear-gradient(135deg,#D6EEF2,#eaf7f9) !important; }
+  .sec-item.active .chk { background:#2E7D8C; border-color:#2E7D8C; }
+
+  /* ── Buttons ─────────────────────────────────────────────────── */
+  .btn-teal {
+    background:linear-gradient(135deg,#2E7D8C,#1d5a66);
+    transition:all .2s;
+  }
+  .btn-teal:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(46,125,140,.38); }
+
+  .progress-fill {
+    background:linear-gradient(90deg,#2E7D8C,#5BA8B5,#2E7D8C);
+    background-size:200% 100%;
+    animation:shimmer 1.5s infinite;
+  }
+
+  /* ── Nav tabs ────────────────────────────────────────────────── */
+  .nav-tab { transition:all .2s; cursor:pointer; }
+  .nav-tab.active { background:#2E7D8C; color:white; }
+  .nav-tab:not(.active):hover { background:#D6EEF2; color:#2E7D8C; }
+
+  /* ── Grade inputs ────────────────────────────────────────────── */
+  .nota-input {
+    width:42px; text-align:center;
+    border:1.5px solid #e2e8f0; border-radius:6px;
+    padding:3px 2px; font-size:.78rem;
+    font-family:'Outfit',sans-serif; font-weight:600;
+    background:white; transition:all .15s; outline:none;
+  }
+  .nota-input:focus { border-color:#2E7D8C; background:#D6EEF2; }
+  .nota-ok    { background:#dcfce7; border-color:#22c55e; color:#166534; }
+  .nota-warn  { background:#fef3c7; border-color:#f59e0b; color:#92400e; }
+  .nota-bad   { background:#fee2e2; border-color:#ef4444; color:#991b1b; }
+
+  .prom { display:inline-flex; align-items:center; justify-content:center;
+          min-width:44px; padding:3px 6px; border-radius:8px; font-weight:700; font-size:.8rem; }
+  .prom-ok    { background:#dcfce7; color:#166534; }
+  .prom-warn  { background:#fef3c7; color:#92400e; }
+  .prom-bad   { background:#fee2e2; color:#991b1b; }
+  .prom-empty { background:#f1f5f9; color:#94a3b8; }
+
+  /* ── Grades table sticky ─────────────────────────────────────── */
+  .gtable { border-collapse:separate; border-spacing:0; }
+  .gtable th { position:sticky; top:0; z-index:10; }
+  .col-al { position:sticky; left:0; z-index:20; }
+  .gtable th.col-al { z-index:30; }
+
+  /* ── Thumb pages ─────────────────────────────────────────────── */
+  .thumb { transition:all .2s; }
+  .thumb:hover { transform:translateY(-3px) scale(1.04); box-shadow:0 10px 24px rgba(0,0,0,.13); }
+
+  /* ── Drag zone ───────────────────────────────────────────────── */
+  .drop-zone { transition:all .2s; }
+  .drop-zone:hover { border-color:#5BA8B5 !important; background:#F5F0E8; }
+  .drop-zone.dragging { border-color:#2E7D8C !important; background:#D6EEF2; }
+
+  /* ── Grain overlay ───────────────────────────────────────────── */
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:999;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity:.3;
+  }
+</style>
+</head>
+
+<body x-data="app()" class="min-h-screen">
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     HEADER GLOBAL
+════════════════════════════════════════════════════════════════════════════ -->
+<header class="bg-ink text-white sticky top-0 z-50 border-b-2 border-teal">
+  <div class="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-teal flex items-center justify-center">
+        <i data-lucide="book-open" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <h1 class="font-display text-xl font-semibold tracking-tight leading-none">
+          cuaderno <em class="text-teal-mid">de profe</em>
+        </h1>
+        <p class="text-[10px] text-gray-400 tracking-widest uppercase">App Completa · v2.0</p>
+      </div>
+    </div>
+
+    <!-- Nav tabs -->
+    <div class="flex items-center gap-1 bg-white/8 rounded-xl p-1">
+      <button class="nav-tab px-4 py-2 rounded-lg text-sm font-semibold"
+        :class="view==='builder' ? 'active' : 'text-gray-300'"
+        @click="view='builder'; $nextTick(()=>initLucide())">
+        <i data-lucide="layout-template" class="w-3.5 h-3.5 inline mr-1.5"></i>
+        Constructor PDF
+      </button>
+      <button class="nav-tab px-4 py-2 rounded-lg text-sm font-semibold"
+        :class="view==='notas' ? 'active' : 'text-gray-300'"
+        @click="view='notas'; $nextTick(()=>initLucide())">
+        <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 inline mr-1.5"></i>
+        Módulo de Notas
+      </button>
+    </div>
+
+    <!-- Status -->
+    <div class="hidden md:flex items-center gap-2 text-xs text-gray-400">
+      <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+      <span>100% local · sin servidor</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     VISTA 1 — CONSTRUCTOR PDF
+════════════════════════════════════════════════════════════════════════════ -->
+<div x-show="view==='builder'" x-transition.opacity class="fade-in">
+<div class="max-w-7xl mx-auto px-4 md:px-6 py-8 grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-8 items-start">
+
+  <!-- ── PANEL IZQUIERDO ── -->
+  <aside class="lg:sticky lg:top-24 space-y-4">
+
+    <!-- PORTADAS -->
+    <div class="bg-white rounded-2xl shadow-sm border border-sand-dark overflow-hidden">
+      <div class="bg-gradient-to-r from-teal to-teal-dark px-5 py-4">
+        <div class="flex items-center gap-2 text-white">
+          <i data-lucide="layout" class="w-4 h-4"></i>
+          <h2 class="font-semibold text-sm">Elegí tu portada</h2>
+        </div>
+        <p class="text-teal-light text-xs mt-0.5 opacity-80">3 estilos + imagen propia</p>
+      </div>
+      <div class="p-4 space-y-3">
+        <!-- Preset covers -->
+        <div class="grid grid-cols-3 gap-3">
+          <template x-for="c in covers" :key="c.id">
+            <div class="cover-card rounded-xl overflow-hidden aspect-[3/4] relative shadow-sm"
+              :class="{selected: selCover===c.id}"
+              @click="selCover=c.id; customImg=null"
+              :style="`background:${c.grad}`">
+              <div class="absolute inset-0 opacity-15">
+                <template x-for="i in 10"><div class="absolute rounded-full bg-white"
+                  :style="`width:${6+Math.sin(i*7)*4}px;height:${6+Math.sin(i*7)*4}px;top:${10+i*8}%;left:${(i*33)%85}%`"></div></template>
+              </div>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-2">
+                <span class="font-display italic text-sm font-semibold leading-tight">cuaderno<br>de profe</span>
+                <div class="w-8 h-px bg-white/50 my-1.5"></div>
+                <span class="text-xs opacity-75" x-text="c.name"></span>
+              </div>
+              <div x-show="selCover===c.id"
+                class="absolute top-2 right-2 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow">
+                <i data-lucide="check" class="w-3 h-3 text-teal"></i>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-2">
+          <div class="flex-1 h-px bg-sand-dark"></div>
+          <span class="text-xs text-gray-400">o subí tu imagen</span>
+          <div class="flex-1 h-px bg-sand-dark"></div>
+        </div>
+
+        <!-- Upload imagen -->
+        <div class="drop-zone rounded-xl border-2 border-dashed border-sand-dark cursor-pointer overflow-hidden"
+          :class="{dragging: isDrag}"
+          @click="$refs.imgFile.click()"
+          @dragover.prevent="isDrag=true"
+          @dragleave.prevent="isDrag=false"
+          @drop.prevent="handleImgDrop($event)">
+          <div x-show="customImg" class="relative">
+            <img :src="customImg" class="w-full h-32 object-cover">
+            <div class="absolute inset-0 bg-black/30 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+              <i data-lucide="image" class="w-5 h-5 text-white mb-1"></i>
+              <span class="text-white text-xs font-medium">Cambiar imagen</span>
+            </div>
+          </div>
+          <div x-show="!customImg" class="py-5 flex flex-col items-center gap-2 text-center px-3">
+            <div class="w-9 h-9 rounded-xl bg-sand-dark flex items-center justify-center">
+              <i data-lucide="upload-cloud" class="w-5 h-5 text-teal"></i>
+            </div>
+            <p class="text-sm font-medium text-ink">Subí tu portada</p>
+            <p class="text-xs text-gray-400">JPG, PNG · máx 5MB</p>
+          </div>
+        </div>
+        <div x-show="customImg" class="flex gap-2">
+          <button @click.stop="selCover='custom'"
+            class="flex-1 py-2 rounded-xl text-xs font-semibold transition-all"
+            :class="selCover==='custom'?'bg-teal text-white':'bg-sand text-teal border border-teal hover:bg-teal-light'">
+            <span x-show="selCover!=='custom'">Usar esta imagen</span>
+            <span x-show="selCover==='custom'">✓ Seleccionada</span>
+          </button>
+          <button @click.stop="customImg=null; selCover='teal'"
+            class="px-3 py-2 rounded-xl bg-rose-light text-rose text-xs font-semibold hover:bg-rose/20 border border-rose/20">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+        <input type="file" accept="image/*" x-ref="imgFile" class="hidden" @change="handleImgFile($event)">
+      </div>
+    </div>
+
+    <!-- DATOS -->
+    <div class="bg-white rounded-2xl shadow-sm border border-sand-dark overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-sand-dark flex items-center gap-2">
+        <i data-lucide="user" class="w-4 h-4 text-teal"></i>
+        <h2 class="font-semibold text-sm text-ink">Tus datos</h2>
+      </div>
+      <div class="p-4 space-y-3">
+        <template x-for="f in fields" :key="f.key">
+          <div>
+            <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1" x-text="f.label"></label>
+            <template x-if="f.type==='select'">
+              <select x-model="fd[f.key]"
+                class="w-full px-3 py-2.5 bg-sand rounded-xl border border-sand-dark text-sm focus:outline-none focus:border-teal focus:bg-white transition-all">
+                <template x-for="o in f.opts"><option :value="o" x-text="o"></option></template>
+              </select>
+            </template>
+            <template x-if="f.type!=='select'">
+              <input :type="f.type" x-model="fd[f.key]" :placeholder="f.ph"
+                class="w-full px-3 py-2.5 bg-sand rounded-xl border border-sand-dark text-sm focus:outline-none focus:border-teal focus:bg-white transition-all placeholder-gray-300">
+            </template>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- SECCIONES -->
+    <div class="bg-white rounded-2xl shadow-sm border border-sand-dark overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-sand-dark flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4 text-teal"></i>
+          <h2 class="font-semibold text-sm text-ink">Secciones</h2>
+        </div>
+        <div class="flex gap-2 text-xs font-medium">
+          <button @click="secs.forEach(s=>s.on=true)" class="text-teal hover:text-teal-dark">Todo</button>
+          <span class="text-gray-200">|</span>
+          <button @click="secs.forEach(s=>s.on=false)" class="text-gray-400 hover:text-gray-600">Ninguno</button>
+        </div>
+      </div>
+      <div class="p-3 space-y-1.5 max-h-72 overflow-y-auto">
+        <template x-for="s in secs" :key="s.id">
+          <div class="sec-item flex items-center gap-3 px-3 py-2.5 rounded-xl border border-transparent"
+            :class="{active:s.on}" @click="s.on=!s.on">
+            <div class="chk w-5 h-5 rounded-md border-2 border-gray-200 bg-white flex items-center justify-center flex-shrink-0 transition-all">
+              <i data-lucide="check" class="w-3 h-3 text-white" x-show="s.on"></i>
+            </div>
+            <div class="flex items-center gap-2 flex-1">
+              <span class="text-base" x-text="s.icon"></span>
+              <div>
+                <div class="text-sm font-medium text-ink leading-tight" x-text="s.name"></div>
+                <div class="text-xs text-gray-400" x-text="s.desc"></div>
+              </div>
+            </div>
+            <span class="text-xs text-gray-300 font-medium" x-text="s.pages+'p'"></span>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- ALUMNOS EXCEL -->
+    <div class="bg-white rounded-2xl shadow-sm border border-sand-dark overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-sand-dark flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="table-2" class="w-4 h-4 text-teal"></i>
+          <h2 class="font-semibold text-sm text-ink">Alumnos (Excel)</h2>
+        </div>
+        <span x-show="alumnos.length>0"
+          class="text-xs font-semibold px-2 py-0.5 rounded-full"
+          style="background:#D6EEF2;color:#2E7D8C"
+          x-text="alumnos.length+' cargados'"></span>
+      </div>
+      <div class="p-4 space-y-3">
+        <div x-show="alumnos.length===0">
+          <div class="drop-zone rounded-xl border-2 border-dashed border-sand-dark cursor-pointer p-5 text-center"
+            @click="$refs.xlsFile.click()"
+            @dragover.prevent @drop.prevent="parseAlumnos($event.dataTransfer.files[0])">
+            <i data-lucide="file-spreadsheet" class="w-6 h-6 text-teal-mid mx-auto mb-2"></i>
+            <p class="text-sm font-medium text-ink">Subí tu planilla Excel</p>
+            <p class="text-xs text-gray-400 mt-0.5">.xlsx / .xls / .csv</p>
+          </div>
+          <div class="mt-2 flex items-start gap-2 bg-yellow-50 border border-yellow-100 rounded-xl p-2.5">
+            <i data-lucide="lightbulb" class="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5"></i>
+            <div class="text-xs text-yellow-800">
+              <p class="font-semibold mb-1">¿Primera vez?</p>
+              <button @click="dlTemplate()" class="text-teal font-semibold flex items-center gap-1 hover:text-teal-dark">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                Descargar plantilla_alumnos.xlsx
+              </button>
+            </div>
+          </div>
+        </div>
+        <div x-show="alumnos.length>0" class="space-y-2">
+          <div class="flex items-center justify-between bg-teal-light rounded-xl px-3 py-2.5">
+            <div class="flex items-center gap-2">
+              <i data-lucide="users" class="w-4 h-4 text-teal"></i>
+              <span class="text-sm font-semibold text-teal" x-text="alumnos.length+' alumnos/as'"></span>
+            </div>
+            <button @click="alumnos=[]" class="text-xs text-rose font-medium flex items-center gap-1">
+              <i data-lucide="x" class="w-3 h-3"></i>Limpiar
+            </button>
+          </div>
+          <div class="rounded-xl border border-sand-dark overflow-hidden max-h-36 overflow-y-auto">
+            <table class="w-full text-xs">
+              <thead><tr style="background:#2E7D8C">
+                <th class="px-2 py-1.5 text-white text-left w-6">#</th>
+                <th class="px-2 py-1.5 text-white text-left">Apellidos</th>
+                <th class="px-2 py-1.5 text-white text-left">Nombre</th>
+              </tr></thead>
+              <tbody>
+                <template x-for="(al,i) in alumnos.slice(0,8)" :key="i">
+                  <tr :style="i%2===0?'background:#D6EEF2':'background:#fff'">
+                    <td class="px-2 py-1 text-teal font-bold" x-text="i+1"></td>
+                    <td class="px-2 py-1 font-medium text-ink" x-text="al.apellidos||'—'"></td>
+                    <td class="px-2 py-1 text-ink" x-text="al.nombre||'—'"></td>
+                  </tr>
+                </template>
+                <tr x-show="alumnos.length>8" style="background:#F5F0E8">
+                  <td colspan="3" class="px-2 py-1.5 text-center text-gray-400 text-xs"
+                    x-text="'+ '+(alumnos.length-8)+' más...'"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button @click="$refs.xlsFile.click()"
+            class="w-full py-2 rounded-xl border border-teal text-teal text-xs font-semibold hover:bg-teal-light transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>Reemplazar
+          </button>
+        </div>
+        <input type="file" accept=".xlsx,.xls,.csv" x-ref="xlsFile" class="hidden"
+          @change="e=>{ parseAlumnos(e.target.files[0]); e.target.value=''; }">
+        <p x-show="xlsErr" class="text-xs text-red-500 bg-red-50 rounded-lg p-2" x-text="xlsErr"></p>
+      </div>
+    </div>
+
+    <!-- GENERATE -->
+    <div class="space-y-3">
+      <div x-show="generating" x-transition class="bg-white rounded-xl p-4 shadow-sm border border-sand-dark">
+        <div class="flex justify-between mb-2">
+          <span class="text-xs font-medium text-ink" x-text="pLabel"></span>
+          <span class="text-xs text-teal font-semibold" x-text="pPct+'%'"></span>
+        </div>
+        <div class="w-full bg-sand-dark rounded-full h-1.5 overflow-hidden">
+          <div class="progress-fill h-full rounded-full transition-all duration-300" :style="`width:${pPct}%`"></div>
+        </div>
+      </div>
+      <button @click="genPDF()" :disabled="generating"
+        class="btn-teal w-full py-4 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-wait">
+        <span x-show="!generating" class="flex items-center gap-2.5">
+          <i data-lucide="download" class="w-4 h-4"></i>Descargar PDF personalizado
+        </span>
+        <span x-show="generating" class="flex items-center gap-2.5">
+          <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>Generando tu cuaderno…
+        </span>
+      </button>
+      <p class="text-center text-xs text-gray-400">
+        <i data-lucide="lock" class="w-3 h-3 inline mr-1"></i>
+        Todo se procesa en tu dispositivo. Sin servidor, sin internet.
+      </p>
+    </div>
+  </aside>
+
+  <!-- ── PANEL DERECHO ── -->
+  <main class="space-y-5">
+    <!-- Hero -->
+    <div class="bg-ink rounded-3xl p-8 relative overflow-hidden fade-up">
+      <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-teal opacity-10"></div>
+      <div class="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-teal-mid opacity-10"></div>
+      <div class="relative z-10">
+        <div class="flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <p class="text-teal-mid text-xs font-semibold tracking-widest uppercase mb-2">Tu cuaderno · <span x-text="fd.anio"></span></p>
+            <h2 class="font-display text-4xl text-white font-semibold">
+              <span x-show="fd.nombre" x-text="fd.nombre"></span>
+              <span x-show="!fd.nombre" class="italic text-gray-500">Tu nombre aquí</span>
+            </h2>
+            <p class="text-gray-400 text-sm mt-1.5">
+              <span x-show="fd.escuela||fd.materia">
+                <span x-text="fd.escuela"></span>
+                <span x-show="fd.escuela&&fd.materia"> · </span>
+                <span x-text="fd.materia"></span>
+              </span>
+              <span x-show="!fd.escuela&&!fd.materia" class="text-gray-600">Completá tus datos en el panel</span>
+            </p>
+          </div>
+          <div class="flex gap-6">
+            <div class="text-center">
+              <div class="font-display text-4xl italic text-teal-mid" x-text="totalPags"></div>
+              <div class="text-gray-500 text-xs uppercase tracking-wider mt-0.5">páginas</div>
+            </div>
+            <div class="text-center">
+              <div class="font-display text-4xl italic text-teal-mid" x-text="secs.filter(s=>s.on).length+1"></div>
+              <div class="text-gray-500 text-xs uppercase tracking-wider mt-0.5">secciones</div>
+            </div>
+            <div class="text-center">
+              <div class="font-display text-4xl italic" :class="alumnos.length>0?'text-green-400':'text-teal-mid'"
+                x-text="alumnos.length>0?alumnos.length:'A4'"></div>
+              <div class="text-gray-500 text-xs uppercase tracking-wider mt-0.5"
+                x-text="alumnos.length>0?'alumnos':'formato'"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Cover strip -->
+        <div class="mt-5 pt-4 border-t border-white/10 flex items-center gap-3 flex-wrap">
+          <span class="text-xs text-gray-500 uppercase tracking-wider">Portada:</span>
+          <template x-for="c in covers" :key="c.id">
+            <div class="w-6 h-8 rounded-sm cursor-pointer transition-all"
+              :class="selCover===c.id?'ring-2 ring-teal-mid ring-offset-2 ring-offset-ink scale-110':'opacity-40 hover:opacity-70'"
+              :style="`background:${c.grad}`"
+              @click="selCover=c.id; customImg=null"></div>
+          </template>
+          <div x-show="customImg" class="w-6 h-8 rounded-sm cursor-pointer overflow-hidden transition-all"
+            :class="selCover==='custom'?'ring-2 ring-teal-mid ring-offset-2 ring-offset-ink scale-110':'opacity-40'"
+            @click="selCover='custom'">
+            <img :src="customImg" class="w-full h-full object-cover">
+          </div>
+          <span class="text-teal-mid text-xs font-medium ml-1"
+            x-text="selCover==='custom'?'Imagen propia':covers.find(c=>c.id===selCover)?.name"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thumbs -->
+    <div class="bg-white rounded-2xl shadow-sm border border-sand-dark overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-sand-dark flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="grid" class="w-4 h-4 text-teal"></i>
+          <h3 class="font-semibold text-sm text-ink">Vista previa del cuaderno</h3>
+        </div>
+        <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:#D6EEF2;color:#2E7D8C"
+          x-text="totalPags+' páginas'"></span>
+      </div>
+      <div class="p-4 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 xl:grid-cols-9 gap-2.5">
+        <!-- Portada thumb -->
+        <div class="thumb rounded-xl overflow-hidden shadow-sm aspect-[3/4] relative cursor-default">
+          <template x-if="selCover==='custom'&&customImg">
+            <div class="w-full h-full"><img :src="customImg" class="w-full h-full object-cover"></div>
+          </template>
+          <template x-if="selCover!=='custom'">
+            <div class="w-full h-full" :style="`background:${covers.find(c=>c.id===selCover)?.grad}`">
+              <div class="absolute inset-0 opacity-20">
+                <template x-for="i in 6">
+                  <div class="absolute rounded-full bg-white"
+                    :style="`width:${5+i}px;height:${5+i}px;top:${10+i*12}%;left:${(i*33)%80}%`"></div>
+                </template>
+              </div>
+            </div>
+          </template>
+          <div class="absolute bottom-0 left-0 right-0 bg-black/40 text-white text-center py-0.5">
+            <span class="text-[8px] font-semibold">PORTADA</span>
+          </div>
+        </div>
+        <!-- Datos thumb -->
+        <div class="thumb rounded-xl overflow-hidden shadow-sm aspect-[3/4] relative bg-white border border-sand-dark">
+          <div class="p-1.5 space-y-1">
+            <div class="h-1.5 rounded bg-teal/60 w-3/4"></div>
+            <div class="h-px rounded bg-gray-100 w-full"></div>
+            <template x-for="i in 5"><div class="space-y-0.5">
+              <div class="h-px rounded bg-teal/20 w-1/3"></div>
+              <div class="h-px rounded bg-gray-100 w-full"></div>
+            </div></template>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 bg-black/40 text-white text-center py-0.5">
+            <span class="text-[8px] font-semibold">DATOS</span>
+          </div>
+        </div>
+        <!-- Section thumbs -->
+        <template x-for="s in secs.filter(s=>s.on)" :key="s.id">
+          <div class="thumb rounded-xl overflow-hidden shadow-sm aspect-[3/4] relative bg-white border border-sand-dark">
+            <div class="h-2.5 w-full" :style="`background:${s.color}`"></div>
+            <div class="p-1.5 space-y-1">
+              <template x-for="i in 6">
+                <div class="h-px rounded bg-gray-100" :style="`width:${40+(i*17)%55}%`"></div>
+              </template>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-black/40 text-white text-center py-0.5">
+              <span class="text-[8px] font-semibold uppercase" x-text="s.short"></span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <template x-for="t in tips" :key="t.icon">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-sand-dark flex gap-3 items-start">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" :style="`background:${t.bg}`">
+            <span class="text-sm" x-text="t.icon"></span>
+          </div>
+          <div>
+            <div class="font-semibold text-sm text-ink mb-0.5" x-text="t.title"></div>
+            <div class="text-xs text-gray-400 leading-relaxed" x-text="t.desc"></div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </main>
+</div><!-- /grid builder -->
+</div><!-- /view builder -->
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     VISTA 2 — MÓDULO DE NOTAS
+════════════════════════════════════════════════════════════════════════════ -->
+<div x-show="view==='notas'" x-transition.opacity class="fade-in">
+<div class="max-w-full px-4 md:px-6 py-6 space-y-5">
+
+  <!-- Barra de controles -->
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <!-- Etapa tabs -->
+    <div class="flex items-center gap-1 bg-white rounded-xl p-1 shadow-sm border border-sand-dark">
+      <template x-for="(et,i) in etapaLabels" :key="i">
+        <button class="px-3 py-2 rounded-lg text-xs font-semibold transition-all"
+          :class="etapa===i+1?'bg-teal text-white':'text-gray-500 hover:bg-teal-light hover:text-teal'"
+          @click="etapa=i+1" x-text="et"></button>
+      </template>
+    </div>
+    <!-- Acciones -->
+    <div class="flex items-center gap-2">
+      <button @click="showMat=!showMat"
+        class="flex items-center gap-1.5 px-3 py-2 bg-white rounded-xl text-sm font-medium text-ink border border-sand-dark hover:border-teal shadow-sm transition-all">
+        <i data-lucide="settings" class="w-4 h-4 text-teal"></i>Materias
+      </button>
+      <button @click="showAlInput=!showAlInput"
+        class="flex items-center gap-1.5 px-3 py-2 bg-white rounded-xl text-sm font-medium text-ink border border-sand-dark hover:border-teal shadow-sm transition-all">
+        <i data-lucide="users" class="w-4 h-4 text-teal"></i>
+        <span x-text="alumnos.length>0?alumnos.length+' alumnos':'Cargar alumnos'"></span>
+      </button>
+      <button @click="exportNotasXlsx()"
+        class="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 rounded-xl text-sm font-semibold text-white hover:bg-emerald-500 shadow-sm transition-all">
+        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">Exportar Excel</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Config materias -->
+  <div x-show="showMat" x-transition class="bg-white rounded-2xl shadow-sm border border-sand-dark p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold text-sm text-ink flex items-center gap-2">
+        <i data-lucide="book" class="w-4 h-4 text-teal"></i>Configurar materias
+      </h3>
+      <button @click="showMat=false"><i data-lucide="x" class="w-4 h-4 text-gray-400 hover:text-ink"></i></button>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <template x-for="(m,i) in materias" :key="i">
+        <div class="flex items-center gap-2">
+          <input x-model="materias[i]"
+            class="flex-1 px-3 py-2 bg-sand rounded-xl border border-sand-dark text-sm focus:outline-none focus:border-teal focus:bg-white transition-all"
+            :placeholder="'Materia '+(i+1)">
+          <button @click="materias.splice(i,1)" x-show="materias.length>1"
+            class="w-7 h-7 rounded-lg bg-rose-light text-rose hover:bg-rose/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="minus" class="w-3 h-3"></i>
+          </button>
+        </div>
+      </template>
+    </div>
+    <button @click="materias.push('')" x-show="materias.length<12"
+      class="mt-3 flex items-center gap-1.5 px-3 py-2 rounded-xl border border-dashed border-teal-mid text-teal text-sm font-medium hover:bg-teal-light transition-colors">
+      <i data-lucide="plus" class="w-4 h-4"></i>Agregar materia
+    </button>
+  </div>
+
+  <!-- Cargar alumnos en notas -->
+  <div x-show="showAlInput" x-transition class="bg-white rounded-2xl shadow-sm border border-sand-dark p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold text-sm text-ink flex items-center gap-2">
+        <i data-lucide="users" class="w-4 h-4 text-teal"></i>Cargar alumnos
+      </h3>
+      <button @click="showAlInput=false"><i data-lucide="x" class="w-4 h-4 text-gray-400 hover:text-ink"></i></button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Ingresar manualmente</p>
+        <textarea x-model="alTexto"
+          placeholder="Uno por línea:&#10;García, María&#10;Rodríguez, Lucas"
+          class="w-full h-28 px-3 py-2.5 bg-sand rounded-xl border border-sand-dark text-sm focus:outline-none focus:border-teal resize-none placeholder-gray-300"></textarea>
+        <button @click="cargarAlTexto()"
+          class="mt-2 w-full py-2.5 bg-teal text-white text-sm font-semibold rounded-xl hover:bg-teal-dark transition-colors">
+          Cargar lista
+        </button>
+      </div>
+      <div>
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Desde Excel / CSV</p>
+        <div class="drop-zone rounded-xl border-2 border-dashed border-sand-dark cursor-pointer p-5 text-center h-28 flex flex-col items-center justify-center gap-2"
+          @click="$refs.alXls.click()" @dragover.prevent @drop.prevent="parseAlumnos($event.dataTransfer.files[0])">
+          <i data-lucide="file-spreadsheet" class="w-6 h-6 text-teal-mid"></i>
+          <p class="text-sm text-gray-400">Subí el Excel de alumnos</p>
+        </div>
+        <input type="file" accept=".xlsx,.xls,.csv" x-ref="alXls" class="hidden"
+          @change="e=>{parseAlumnos(e.target.files[0]);e.target.value='';}">
+        <div x-show="alumnos.length>0" class="mt-2 flex items-center justify-between bg-teal-light rounded-xl px-3 py-2">
+          <span class="text-xs font-semibold text-teal" x-text="alumnos.length+' alumnos cargados'"></span>
+          <button @click="alumnos=[]" class="text-xs text-rose font-medium">Limpiar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo button -->
+  <div x-show="alumnos.length===0" class="bg-white rounded-2xl shadow-sm border border-sand-dark p-10 text-center">
+    <div class="w-16 h-16 rounded-2xl bg-sand mx-auto mb-4 flex items-center justify-center">
+      <i data-lucide="users" class="w-8 h-8 text-teal-mid"></i>
+    </div>
+    <p class="font-semibold text-ink mb-1">No hay alumnos cargados</p>
+    <p class="text-sm text-gray-400 mb-4">Cargá la lista para empezar a registrar notas</p>
+    <button @click="cargarDemo()"
+      class="px-5 py-2.5 bg-teal text-white text-sm font-semibold rounded-xl hover:bg-teal-dark transition-colors">
+      Cargar alumnos de ejemplo
+    </button>
+  </div>
+
+  <!-- ── GRILLA DE NOTAS ── -->
+  <div x-show="alumnos.length>0" class="bg-white rounded-2xl shadow-sm border border-sand-dark overflow-hidden">
+    <div class="px-5 py-3.5 border-b border-sand-dark flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="grid" class="w-4 h-4 text-teal"></i>
+        <h2 class="font-semibold text-sm text-ink">
+          <span x-text="etapa===4?'Resumen Final — Promedios':etapaLabels[etapa-1]+' — '+(etapa<3?'4':'')+(etapa===3?nEt3:'4')+' notas por materia'"></span>
+        </h2>
+      </div>
+      <!-- Control notas etapa 3 -->
+      <div x-show="etapa===3" class="flex items-center gap-2">
+        <span class="text-xs text-gray-400">Notas:</span>
+        <button @click="nEt3=Math.max(2,nEt3-1)"
+          class="w-6 h-6 rounded-lg bg-sand hover:bg-sand-dark flex items-center justify-center transition-colors">
+          <i data-lucide="minus" class="w-3 h-3 text-ink"></i>
+        </button>
+        <span class="text-sm font-bold text-teal w-4 text-center" x-text="nEt3"></span>
+        <button @click="nEt3=Math.min(3,nEt3+1)"
+          class="w-6 h-6 rounded-lg bg-sand hover:bg-sand-dark flex items-center justify-center transition-colors">
+          <i data-lucide="plus" class="w-3 h-3 text-ink"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ETAPAS 1-3 -->
+    <div x-show="etapa<4" class="overflow-auto max-h-[62vh]">
+      <table class="gtable w-full text-xs">
+        <thead>
+          <tr>
+            <th class="col-al bg-ink text-white px-4 py-3 text-left font-semibold min-w-[155px] border-r border-white/10">
+              Alumno/a
+            </th>
+            <template x-for="(mat,mi) in materias" :key="mi">
+              <template x-for="(_,ni) in Array(etapa===3?nEt3:4)" :key="ni">
+                <th class="text-white px-1 py-3 text-center min-w-[50px] font-medium"
+                  :style="mi%2===0?'background:#1A1A2E':'background:#242444'">
+                  <span class="text-gray-400 text-[10px] block leading-none" x-text="mat||('M'+(mi+1))"></span>
+                  <span x-text="'N'+(ni+1)"></span>
+                </th>
+              </template>
+              <th class="px-1 py-3 text-center min-w-[54px] border-l border-white/10"
+                :style="mi%2===0?'background:#1A1A2E':'background:#242444'">
+                <span class="text-teal-mid text-[10px] block leading-none" x-text="mat||('M'+(mi+1))"></span>
+                <span class="text-teal-mid font-bold">Prom</span>
+              </th>
+            </template>
+            <th class="bg-teal text-white px-3 py-3 text-center min-w-[68px] sticky right-0">
+              <span class="text-teal-light text-[10px] block leading-none">GENERAL</span>
+              <span class="font-bold">Prom</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="(al,ai) in alumnos" :key="ai">
+            <tr :class="ai%2===0?'bg-white':'bg-sand/40'" class="hover:bg-teal-light/25 transition-colors">
+              <td class="col-al px-4 py-2 font-medium text-ink text-sm border-r border-sand-dark"
+                :class="ai%2===0?'bg-white':'bg-sand/40'">
+                <span x-text="al.apellidos?(al.apellidos+', '+al.nombre):al"></span>
+              </td>
+              <template x-for="(mat,mi) in materias" :key="mi">
+                <template x-for="(_,ni) in Array(etapa===3?nEt3:4)" :key="ni">
+                  <td class="px-1 py-1.5 text-center">
+                    <input type="number" min="1" max="10" step="0.1"
+                      class="nota-input"
+                      :class="notaCls(getNota(ai,mi,ni))"
+                      :value="getNota(ai,mi,ni)"
+                      @input="setNota(ai,mi,ni,$event.target.value)"
+                      placeholder="—">
+                  </td>
+                </template>
+                <td class="px-1 py-1.5 text-center border-l border-sand-dark">
+                  <span class="prom" :class="promCls(promMat(ai,mi))">
+                    <span x-text="promMat(ai,mi)>0?promMat(ai,mi).toFixed(1):'—'"></span>
+                  </span>
+                </td>
+              </template>
+              <td class="px-2 py-1.5 text-center sticky right-0" :class="ai%2===0?'bg-white':'bg-sand/40'">
+                <span class="prom font-display italic text-sm" :class="promCls(promGen(ai))">
+                  <span x-text="promGen(ai)>0?promGen(ai).toFixed(2):'—'"></span>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+        <tfoot>
+          <tr class="border-t-2 border-teal" style="background:#1A1A2E">
+            <td class="col-al px-4 py-2.5 font-bold text-teal-mid text-sm sticky left-0" style="background:#1A1A2E">
+              Promedio grupo
+            </td>
+            <template x-for="(mat,mi) in materias" :key="mi">
+              <template x-for="(_,ni) in Array(etapa===3?nEt3:4)" :key="ni">
+                <td class="px-1 py-2.5 text-center"><span class="text-gray-600 text-xs">—</span></td>
+              </template>
+              <td class="px-1 py-2.5 text-center border-l border-white/10">
+                <span class="prom" :class="promCls(promGrupoMat(mi))">
+                  <span x-text="promGrupoMat(mi)>0?promGrupoMat(mi).toFixed(1):'—'"></span>
+                </span>
+              </td>
+            </template>
+            <td class="px-2 py-2.5 text-center sticky right-0" style="background:#1A1A2E">
+              <span class="prom font-display italic text-sm" :class="promCls(promGrupoGeneral)">
+                <span x-text="promGrupoGeneral>0?promGrupoGeneral.toFixed(2):'—'"></span>
+              </span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- RESUMEN FINAL -->
+    <div x-show="etapa===4" class="overflow-auto max-h-[62vh]">
+      <table class="gtable w-full text-xs">
+        <thead>
+          <tr>
+            <th class="col-al bg-ink text-white px-4 py-3 text-left font-semibold min-w-[155px] border-r border-white/10"># Alumno/a</th>
+            <template x-for="(mat,mi) in materias" :key="mi">
+              <th class="text-white px-3 py-3 text-center min-w-[80px]"
+                :style="mi%2===0?'background:#1A1A2E':'background:#242444'"
+                x-text="mat||'Materia '+(mi+1)"></th>
+            </template>
+            <th class="bg-teal text-white px-3 py-3 text-center min-w-[88px] sticky right-0">PROM. FINAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="(al,ai) in alumnos" :key="ai">
+            <tr :class="ai%2===0?'bg-white':'bg-sand/40'" class="hover:bg-teal-light/25 transition-colors">
+              <td class="col-al px-4 py-2.5 border-r border-sand-dark" :class="ai%2===0?'bg-white':'bg-sand/40'">
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-full bg-teal-light text-teal text-xs font-bold flex items-center justify-center flex-shrink-0" x-text="ai+1"></span>
+                  <span class="font-medium text-ink text-sm" x-text="al.apellidos?(al.apellidos+', '+al.nombre):al"></span>
+                </div>
+              </td>
+              <template x-for="(mat,mi) in materias" :key="mi">
+                <td class="px-2 py-2.5 text-center">
+                  <div class="space-y-0.5">
+                    <div class="flex items-center justify-center gap-1 text-[10px] text-gray-400">
+                      <span x-text="'C1:'+(promEtapa(ai,mi,1)>0?promEtapa(ai,mi,1).toFixed(1):'—')"></span>
+                      <span x-text="'C2:'+(promEtapa(ai,mi,2)>0?promEtapa(ai,mi,2).toFixed(1):'—')"></span>
+                      <span x-text="'EI:'+(promEtapa(ai,mi,3)>0?promEtapa(ai,mi,3).toFixed(1):'—')"></span>
+                    </div>
+                    <span class="prom" :class="promCls(promMatFinal(ai,mi))">
+                      <span x-text="promMatFinal(ai,mi)>0?promMatFinal(ai,mi).toFixed(2):'—'"></span>
+                    </span>
+                  </div>
+                </td>
+              </template>
+              <td class="px-2 py-2.5 text-center sticky right-0" :class="ai%2===0?'bg-white':'bg-sand/40'">
+                <span class="prom font-display italic text-base px-3 py-1.5" :class="promCls(promFinalAl(ai))">
+                  <span x-text="promFinalAl(ai)>0?promFinalAl(ai).toFixed(2):'—'"></span>
+                </span>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+        <tfoot>
+          <tr class="border-t-2 border-teal" style="background:#1A1A2E">
+            <td class="col-al px-4 py-3 font-bold text-teal-mid sticky left-0" style="background:#1A1A2E">Promedio grupo</td>
+            <template x-for="(mat,mi) in materias" :key="mi">
+              <td class="px-2 py-3 text-center">
+                <span class="prom" :class="promCls(promGrupoMatFinal(mi))">
+                  <span x-text="promGrupoMatFinal(mi)>0?promGrupoMatFinal(mi).toFixed(2):'—'"></span>
+                </span>
+              </td>
+            </template>
+            <td class="px-2 py-3 text-center sticky right-0" style="background:#1A1A2E">
+              <span class="prom font-display italic text-base px-3" :class="promCls(promGrupoFinal)">
+                <span x-text="promGrupoFinal>0?promGrupoFinal.toFixed(2):'—'"></span>
+              </span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div x-show="alumnos.length>0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <template x-for="st in statsCards" :key="st.label">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-sand-dark">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center" :style="`background:${st.bg}`">
+            <span class="text-sm" x-text="st.icon"></span>
+          </div>
+          <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider" x-text="st.label"></span>
+        </div>
+        <div class="font-display text-3xl italic" :class="st.color" x-text="st.val"></div>
+        <div class="text-xs text-gray-400 mt-0.5" x-text="st.sub"></div>
+      </div>
+    </template>
+  </div>
+
+</div><!-- /notas content -->
+</div><!-- /view notas -->
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SCRIPT PRINCIPAL
+════════════════════════════════════════════════════════════════════════════ -->
+<script>
+// ── Lucide helper ─────────────────────────────────────────────────────────
+function initLucide() {
+  if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
+}
+document.addEventListener('DOMContentLoaded', initLucide);
+document.addEventListener('alpine:initialized', initLucide);
+window.addEventListener('load', () => setTimeout(initLucide, 250));
+
+// ── Descargar plantilla Excel ─────────────────────────────────────────────
+function dlTemplateXlsx() {
+  if (!window.XLSX) { alert('Cargando...'); return; }
+  const wb = XLSX.utils.book_new();
+  const hdrs = ['N°','Apellidos','Nombre','DNI','Fecha nacimiento','Género',
+    'Dirección','Teléfono familiar','Email familiar',
+    'Nombre padre/tutor','Teléfono padre','Nombre madre/tutor','Teléfono madre',
+    'Email contacto','Necesidades especiales','Observaciones'];
+  const data = [
+    ['⚠️ No modifiques esta fila de encabezados. Cargá los datos desde la fila 3.'],
+    hdrs,
+    [1,'García','María','12345678','15/03/2010','Femenino','Av. Corrientes 1234',
+     '11-2345-6789','familia@mail.com','Juan García','11-9876-5432',
+     'Ana López','11-1111-2222','contacto@mail.com','Alergia al maní','Muy participativa'],
+  ];
+  for (let i = 2; i <= 35; i++) data.push([i]);
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  ws['!cols'] = [{wch:4},{wch:20},{wch:18},{wch:12},{wch:16},{wch:12},{wch:28},
+    {wch:16},{wch:24},{wch:20},{wch:16},{wch:20},{wch:16},{wch:24},{wch:30},{wch:28}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Alumnos');
+  const wsI = XLSX.utils.aoa_to_sheet([
+    ['INSTRUCCIONES'],[''],
+    ['1. Completá desde la fila 3 en adelante'],
+    ['2. No modifiques la fila 2 (encabezados)'],
+    ['3. Guardá como .xlsx y subilo en la app'],
+    ['4. Columnas obligatorias: Apellidos, Nombre'],
+  ]);
+  wsI['!cols'] = [{wch:55}];
+  XLSX.utils.book_append_sheet(wb, wsI, 'Instrucciones');
+  XLSX.writeFile(wb, 'plantilla_alumnos_cuaderno.xlsx');
+}
+
+// ── MAIN APP ──────────────────────────────────────────────────────────────
+function app() {
+  return {
+
+    // ── Navigation ──────────────────────────────────────────────────────
+    view: 'builder',
+
+    // ── BUILDER STATE ───────────────────────────────────────────────────
+    selCover: 'teal',
+    customImg: null,
+    customImgData: null,
+    isDrag: false,
+    generating: false,
+    pPct: 0,
+    pLabel: '',
+    xlsErr: null,
+
+    covers: [
+      { id:'teal', name:'Teal clásico',   grad:'linear-gradient(135deg,#1d5a66,#2E7D8C)' },
+      { id:'dark', name:'Noche elegante', grad:'linear-gradient(135deg,#1A1A2E,#2d3561)' },
+      { id:'rose', name:'Rosa pastel',    grad:'linear-gradient(135deg,#a05560,#C0717C)' },
+    ],
+
+    fd: { nombre:'', escuela:'', materia:'', anio:'2025 / 2026' },
+
+    fields: [
+      { key:'nombre',  label:'Nombre del/la docente', type:'text',   ph:'Ej: María González' },
+      { key:'escuela', label:'Institución / Escuela',  type:'text',   ph:'Ej: Escuela N° 123' },
+      { key:'materia', label:'Materia / Asignatura',   type:'text',   ph:'Ej: Matemáticas' },
+      { key:'anio',    label:'Año escolar', type:'select',
+        opts:['2025 / 2026','2026 / 2027','2027 / 2028'] },
+    ],
+
+    secs: [
+      { id:'cal',   name:'Calendario anual',      desc:'12 meses con leyenda',         icon:'📅', pages:1, on:true,  color:'#2E7D8C', short:'CALEND.' },
+      { id:'sem',   name:'Planificación semanal', desc:'Lunes a domingo',              icon:'📆', pages:1, on:true,  color:'#5BA8B5', short:'SEMANAL' },
+      { id:'hor',   name:'Horario del curso',     desc:'Grilla por horas',             icon:'🕐', pages:1, on:true,  color:'#3d6b8c', short:'HORARIO' },
+      { id:'fich',  name:'Ficha de alumno',       desc:'Datos + notas + asistencia',   icon:'🧑‍🎓', pages:1, on:true,  color:'#C0717C', short:'FICHA'  },
+      { id:'notas', name:'Registro de notas',     desc:'3 evaluaciones completas',     icon:'📊', pages:3, on:true,  color:'#4a9e7c', short:'NOTAS'  },
+      { id:'asist', name:'Control asistencia',    desc:'Grilla mensual 31 días',       icon:'✅', pages:1, on:true,  color:'#8b6fb5', short:'ASIST.' },
+      { id:'reun',  name:'Acta de reunión',       desc:'Claustro + tutorías',          icon:'🤝', pages:2, on:true,  color:'#c08050', short:'REUNIÓN' },
+      { id:'obj',   name:'Objetivos anuales',     desc:'Por trimestre',                icon:'🎯', pages:1, on:false, color:'#2d7a5c', short:'OBJETIV.' },
+      { id:'unid',  name:'Unidades didácticas',   desc:'Cronograma y contenidos',      icon:'📚', pages:1, on:false, color:'#5a6e8c', short:'UNIDAD.' },
+      { id:'fech',  name:'Fechas importantes',    desc:'Por mes del año',              icon:'📌', pages:1, on:false, color:'#7a7a9a', short:'FECHAS' },
+      { id:'chk',   name:'Lista de tareas',       desc:'Con checkboxes y fechas',      icon:'☑️', pages:1, on:false, color:'#5b8a5b', short:'TAREAS' },
+      { id:'com',   name:'Comunicaciones',        desc:'Registro de familias',         icon:'📨', pages:1, on:false, color:'#8c5a2E', short:'COMUNI.' },
+      { id:'inv',   name:'Inventario del aula',   desc:'Materiales y recursos',        icon:'🗂️', pages:1, on:false, color:'#5c7a8c', short:'INVENT.' },
+      { id:'libre', name:'Notas libres',          desc:'Página cuadriculada',          icon:'📝', pages:1, on:true,  color:'#aaaaaa', short:'NOTAS'  },
+    ],
+
+    alumnos: [],
+
+    tips: [
+      { icon:'🎨', title:'Portada a medida',  desc:'Elegí el estilo o subí tu propia imagen.', bg:'#D6EEF2' },
+      { icon:'⚡', title:'Sin internet',      desc:'El PDF se genera en tu navegador, sin subir datos.', bg:'#FDF3D0' },
+      { icon:'📊', title:'Módulo de Notas',   desc:'Registrá notas, promedios y exportá a Excel.', bg:'#FAE8EA' },
+    ],
+
+    get totalPags() {
+      let p = 2;
+      this.secs.forEach(s => { if(s.on) p += s.pages; });
+      return p;
+    },
+
+    // ── Image upload ────────────────────────────────────────────────────
+    handleImgFile(e) {
+      const f = e.target.files[0];
+      if(f) this.loadImg(f);
+    },
+    handleImgDrop(e) {
+      this.isDrag = false;
+      const f = e.dataTransfer.files[0];
+      if(f && f.type.startsWith('image/')) this.loadImg(f);
+    },
+    loadImg(f) {
+      if(f.size > 5*1024*1024) { alert('Imagen demasiado grande (máx 5MB)'); return; }
+      const r = new FileReader();
+      r.onload = e => {
+        this.customImg = e.target.result;
+        this.customImgData = e.target.result;
+        this.selCover = 'custom';
+        this.$nextTick(initLucide);
+      };
+      r.readAsDataURL(f);
+    },
+
+    // ── Excel alumnos ───────────────────────────────────────────────────
+    dlTemplate() { dlTemplateXlsx(); },
+
+    parseAlumnos(file) {
+      if(!file) return;
+      this.xlsErr = null;
+      const r = new FileReader();
+      r.onload = e => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const wb   = XLSX.read(data, {type:'array'});
+          const sn   = wb.SheetNames.includes('Alumnos') ? 'Alumnos' : wb.SheetNames[0];
+          const raw  = XLSX.utils.sheet_to_json(wb.Sheets[sn], {header:1, defval:''});
+          let hi = -1;
+          for(let i=0; i<Math.min(raw.length,10); i++) {
+            const row = raw[i].map(c=>String(c).toLowerCase());
+            if(row.some(c=>c.includes('apellido')||c.includes('nombre'))) { hi=i; break; }
+          }
+          if(hi===-1) { this.xlsErr='No se encontraron encabezados. Usá la plantilla oficial.'; return; }
+          const hdrs = raw[hi].map(h=>String(h).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
+          const iA = hdrs.findIndex(h=>h.includes('apellido'));
+          const iN = hdrs.findIndex(h=>h.includes('nombre'));
+          const iT = hdrs.findIndex(h=>h.includes('telef'));
+          this.alumnos = raw.slice(hi+1)
+            .filter(row=>row.some(c=>c!==''))
+            .map(row=>({
+              apellidos: iA>=0?String(row[iA]||'').trim():'',
+              nombre:    iN>=0?String(row[iN]||'').trim():'',
+              telefono:  iT>=0?String(row[iT]||'').trim():'',
+            }))
+            .filter(a=>a.apellidos||a.nombre);
+          this.$nextTick(initLucide);
+        } catch(err) { this.xlsErr='Error al leer el archivo: '+err.message; }
+      };
+      r.readAsArrayBuffer(file);
+    },
+
+    // ── PDF Generation ──────────────────────────────────────────────────
+    async genPDF() {
+      this.generating = true;
+      const setP = (p, l) => { this.pPct=p; this.pLabel=l; };
+      setP(3, 'Iniciando…');
+      await new Promise(r=>setTimeout(r,40));
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+      const W=210, H=297;
+      const nom  = this.fd.nombre  || 'Docente';
+      const esc  = this.fd.escuela || '';
+      const mat  = this.fd.materia || '';
+      const anio = this.fd.anio;
+
+      const pals = {
+        teal:{ bg:'#2E7D8C', acc:'#5BA8B5', light:'#D6EEF2' },
+        dark:{ bg:'#1A1A2E', acc:'#4A90B8', light:'#D0E8F5' },
+        rose:{ bg:'#C0717C', acc:'#E8A0A8', light:'#FAE8EA' },
+      };
+      const pal = pals[this.selCover] || pals.teal;
+
+      const h2r = h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+      const sf = h=>{ const[r,g,b]=h2r(h);doc.setFillColor(r,g,b); };
+      const ss = h=>{ const[r,g,b]=h2r(h);doc.setDrawColor(r,g,b); };
+      const st = h=>{ const[r,g,b]=h2r(h);doc.setTextColor(r,g,b); };
+      const dot=(x1,y1,x2,y2)=>{
+        const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),steps=Math.floor(len/3.5);
+        sf('#CCCCCC');
+        for(let i=0;i<=steps;i++){const t=i/Math.max(steps,1);doc.circle(x1+t*dx,y1+t*dy,.35,'F');}
+      };
+      const secT=(txt,sub='')=>{
+        st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(txt,12,18);
+        if(sub){doc.setFontSize(7);doc.setFont('helvetica','normal');st('#888');doc.text(sub,W/2,18,{align:'center'});}
+        sf(pal.bg);doc.rect(12,20,W-24,.5,'F');
+      };
+
+      // ── PORTADA ──
+      setP(8,'Portada…');
+      if(this.selCover==='custom'&&this.customImgData){
+        doc.addImage(this.customImgData,'JPEG',0,0,W,H);
+        doc.setGState(doc.GState({opacity:.72}));
+        sf('#000000');doc.rect(0,H*.58,W,H*.42,'F');
+        doc.setGState(doc.GState({opacity:1}));
+        st('#FFFFFF');
+        doc.setFont('helvetica','bold');doc.setFontSize(40);doc.text('cuaderno',W/2,H*.69,{align:'center'});
+        doc.setFont('helvetica','normal');doc.setFontSize(40);doc.text('de profe',W/2,H*.77,{align:'center'});
+        doc.setFontSize(14);doc.text(anio,W/2,H*.83,{align:'center'});
+        if(nom){doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text(nom,W/2,H*.89,{align:'center'});}
+        if(esc||mat){doc.setFont('helvetica','normal');doc.setFontSize(9);st('#DDDDDD');
+          doc.text([esc,mat].filter(Boolean).join('  ·  '),W/2,H*.93,{align:'center'});}
+      } else {
+        sf(pal.bg);doc.rect(0,0,W,H,'F');
+        const rnd=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+        for(let i=0;i<55;i++){
+          doc.setGState(doc.GState({opacity:.08+rnd(i)*.1}));
+          sf('#FFFFFF');doc.circle(rnd(i*7+1)*W,rnd(i*13+3)*H,rnd(i*19+5)*8+3,'F');
+        }
+        doc.setGState(doc.GState({opacity:1}));
+        st('#FFFFFF');
+        doc.setFont('helvetica','bold');doc.setFontSize(52);doc.text('cuaderno',W/2,H*.47,{align:'center'});
+        doc.setFont('helvetica','normal');doc.setFontSize(52);doc.text('de profe',W/2,H*.56,{align:'center'});
+        doc.setFontSize(17);doc.text(anio,W/2,H*.64,{align:'center'});
+        if(nom){doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text(nom,W/2,H*.74,{align:'center'});}
+        if(esc||mat){doc.setFont('helvetica','normal');doc.setFontSize(9);
+          doc.text([esc,mat].filter(Boolean).join('  ·  '),W/2,H*.79,{align:'center'});}
+      }
+      doc.addPage();
+
+      // ── DATOS ──
+      setP(13,'Datos…');
+      sf(pal.light);doc.rect(0,0,7,H,'F');
+      sf(pal.bg);doc.rect(0,H-10,W,10,'F');
+      st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('DATOS DEL/LA DOCENTE',12,22);
+      sf(pal.bg);doc.rect(12,24,W-24,.5,'F');
+      let dy=36;
+      [['Nombre y apellidos',nom],['Institución / Escuela',esc],
+       ['Materia / Asignatura',mat],['Año escolar',anio],
+       ['Teléfono',''],['Email',''],['Aula / Nivel','']].forEach(([l,v])=>{
+        st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(l,12,dy);
+        if(v){st('#333');doc.setFont('helvetica','normal');doc.text(v,12,dy+5);}
+        ss('#CCCCCC');doc.setLineWidth(.4);doc.line(12,dy+7,W-12,dy+7);dy+=16;
+      });
+      doc.addPage();
+      await new Promise(r=>setTimeout(r,20));
+
+      // ── SECCIONES ACTIVAS ──
+      const active = this.secs.filter(s=>s.on);
+      for(let si=0; si<active.length; si++){
+        const s = active[si];
+        setP(14+Math.round(si/active.length*78), `Generando: ${s.name}…`);
+        await new Promise(r=>setTimeout(r,15));
+
+        // CALENDARIO
+        if(s.id==='cal'){
+          secT('CALENDARIO ESCOLAR  '+anio);
+          const ms=['sep','oct','nov','dic','ene','feb','mar','abr','may','jun','jul','ago'];
+          const cw=(W-24)/4,ch=(H-44)/3;
+          ms.forEach((m,i)=>{
+            const cx=12+(i%4)*cw,cy=24+Math.floor(i/4)*ch;
+            sf(pal.bg);doc.rect(cx,cy,cw-2,6,'F');
+            st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(7);doc.text(m.toUpperCase(),cx+2,cy+4.2);
+            const dw=(cw-2)/7;
+            ['L','M','X','J','V','S','D'].forEach((d,di)=>{
+              const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);
+              doc.rect(cx+di*dw,cy+6,dw,4,'F');
+              st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(5);
+              doc.text(d,cx+di*dw+dw/2,cy+9.2,{align:'center'});
+            });
+            for(let wk=0;wk<5;wk++) for(let d=0;d<7;d++){
+              sf('#FFF');ss('#DDD');doc.setLineWidth(.25);
+              doc.rect(cx+d*dw,cy+10+wk*4,dw,4,'FD');
+            }
+          });
+          const legs=[['Inicio',pal.bg],['Vacaciones',pal.acc],['Festivo',pal.light],['Exámenes','#FDF3D0']];
+          let lx=12;
+          legs.forEach(([l,c])=>{
+            sf(c);ss('#CCC');doc.setLineWidth(.3);doc.rect(lx,H-16,8,4,'FD');
+            st('#444');doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.text(l,lx+9,H-13);lx+=38;
+          });
+          doc.addPage();
+        }
+
+        // PLANIFICACIÓN SEMANAL
+        if(s.id==='sem'){
+          secT('PLANIFICACIÓN SEMANAL','Semana del _______ al _______   ·   Mes: ___________');
+          const days=['lunes','martes','miércoles','jueves','viernes'];
+          const cw=(W-24)/5,topY=26,botY=H-30;
+          days.forEach((d,i)=>{
+            const bx=12+i*cw;
+            sf(pal.bg);doc.rect(bx,topY,cw-1.5,6,'F');
+            st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(7.5);
+            doc.text(d,bx+(cw-1.5)/2,topY+4.2,{align:'center'});
+            sf('#FFF');ss('#DDD');doc.setLineWidth(.35);
+            doc.rect(bx,topY+6,cw-1.5,botY-topY-6,'FD');
+            let ly=topY+12; while(ly<botY-4){dot(bx+1,ly,bx+cw-3,ly);ly+=6;}
+          });
+          const sw=(W-24)/2;
+          ['sábado','domingo'].forEach((d,i)=>{
+            const bx=12+i*sw;
+            const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);
+            doc.rect(bx,botY+2,sw-1.5,6,'F');
+            st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);
+            doc.text(d,bx+(sw-1.5)/2,botY+5.8,{align:'center'});
+            sf('#FFF');ss('#DDD');doc.setLineWidth(.35);
+            doc.rect(bx,botY+8,sw-1.5,20,'FD');
+          });
+          doc.addPage();
+        }
+
+        // HORARIO
+        if(s.id==='hor'){
+          secT('HORARIO DEL CURSO  '+anio);
+          const cols=['HORAS','lunes','martes','miércoles','jueves','viernes'];
+          const cw=(W-24)/6,topY=24,nrows=12,rh=(H-40)/nrows;
+          cols.forEach((col,ci)=>{
+            const bx=12+ci*cw;
+            if(ci===0){const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);}else sf(pal.bg);
+            doc.rect(bx,topY,cw,6,'F');
+            if(ci===0)st('#1A1A2E');else st('#FFF');
+            doc.setFont('helvetica','bold');doc.setFontSize(7);
+            doc.text(col,bx+cw/2,topY+4.2,{align:'center'});
+          });
+          for(let ri=0;ri<nrows;ri++){
+            const ry=topY+6+ri*rh;
+            cols.forEach((_,ci)=>{
+              const bx=12+ci*cw;
+              if(ci===0){const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);}
+              else if(ri%2===0)doc.setFillColor(248,250,252);
+              else doc.setFillColor(255,255,255);
+              ss('#DDD');doc.setLineWidth(.25);doc.rect(bx,ry,cw,rh,'FD');
+            });
+          }
+          doc.addPage();
+        }
+
+        // FICHA ALUMNO
+        if(s.id==='fich'){
+          sf(pal.bg);doc.roundedRect(12,10,22,14,2,2,'F');
+          st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('N°1',23,18.5,{align:'center'});
+          st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);
+          ['Nombre y apellidos:','Curso / grupo:','Fecha nac.:','Necesidades:'].forEach((l,i)=>{
+            const y=17+i*8;doc.text(l,38,y);ss('#CCC');doc.setLineWidth(.4);doc.line(38,y+2,W-12,y+2);
+          });
+          ['Contacto 1','Contacto 2'].forEach((t,ci)=>{
+            const x=12+ci*(W-24)/2;
+            st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(t,x,52);
+            ['Nombre:','Teléfono:','Email:'].forEach((l,i)=>{
+              const y=59+i*9;
+              st('#444');doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text(l,x,y);
+              ss('#CCC');doc.setLineWidth(.4);doc.line(x+18,y+1,x+90,y+1);
+            });
+          });
+          st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('Faltas de asistencia',12,93);
+          sf(pal.bg);doc.rect(12,95,W-24,.4,'F');
+          const mths=['SEP','OCT','NOV','DIC','ENE','FEB','MAR','ABR','MAY','JUN'];
+          const mcw=(W-62)/mths.length;
+          mths.forEach((m,i)=>{
+            const bx=50+i*mcw;const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);
+            doc.rect(bx,97,mcw,4,'F');
+            st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(5.5);
+            doc.text(m,bx+mcw/2,100.2,{align:'center'});
+          });
+          ['Justificadas','Sin justificar'].forEach((l,ri)=>{
+            const ry=101+ri*5.5;
+            st('#444');doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.text(l,12,ry+3.5);
+            mths.forEach((_,i)=>{sf('#FFF');ss('#DDD');doc.setLineWidth(.25);doc.rect(50+i*mcw,ry,mcw,5.5,'FD');});
+          });
+          st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('Calificaciones',12,120);
+          sf(pal.bg);doc.rect(12,122,W-24,.4,'F');
+          const evals=['1ª EVA','2ª EVA','3ª EVA','FINAL'];
+          const acw=60,ecw=(W-24-acw)/evals.length;
+          evals.forEach((e,ei)=>{
+            const bx=12+acw+ei*ecw;sf(ei<3?pal.bg:pal.acc);doc.rect(bx,124,ecw,5,'F');
+            st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(6);
+            doc.text(e,bx+ecw/2,127.5,{align:'center'});
+          });
+          for(let ri=0;ri<10;ri++){
+            const ry=129+ri*5.5;
+            const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);
+            ss('#DDD');doc.setLineWidth(.25);doc.rect(12,ry,acw,5.5,'FD');
+            evals.forEach((_,ei)=>doc.rect(12+acw+ei*ecw,ry,ecw,5.5,'FD'));
+          }
+          st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('Observaciones',12,192);
+          sf(pal.bg);doc.rect(12,194,W-24,.4,'F');
+          sf('#FFF');ss('#DDD');doc.setLineWidth(.4);doc.rect(12,196,W-24,88,'FD');
+          for(let i=0;i<12;i++)dot(14,204+i*7,W-14,204+i*7);
+          doc.addPage();
+        }
+
+        // REGISTRO NOTAS
+        if(s.id==='notas'){
+          ['1ª','2ª','3ª'].forEach((ev,pi)=>{
+            secT(`REGISTRO DE NOTAS  —  ${ev} EVALUACIÓN`,`Asignatura: ${mat||'___________'}   ·   Año: ${anio}`);
+            const labels=['Trabajos','Tareas','Ctrl 1','Ctrl 2','Examen','Actitud','Nota Final','Recup.'];
+            const nw=50,cw=(W-24-nw)/labels.length,topY=30,nrows=35,rh=(H-46)/nrows;
+            labels.forEach((l,ci)=>{
+              const bx=12+nw+ci*cw;sf(ci<6?pal.bg:pal.acc);doc.rect(bx,topY,cw,6,'F');
+              st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(5);
+              doc.text(l,bx+cw/2,topY+4.2,{align:'center'});
+            });
+            for(let ri=0;ri<nrows;ri++){
+              const ry=topY+6+ri*rh;
+              const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);
+              ss('#DDD');doc.setLineWidth(.2);
+              doc.rect(12,ry,6,rh,'FD');
+              st('#AAA');doc.setFont('helvetica','normal');doc.setFontSize(5.5);
+              doc.text(String(ri+1),15,ry+rh*.65,{align:'center'});
+              doc.rect(18,ry,nw-6,rh,'FD');
+              if(this.alumnos[ri]){
+                st('#333');doc.setFont('helvetica','normal');doc.setFontSize(6);
+                const nc=[this.alumnos[ri].apellidos,this.alumnos[ri].nombre].filter(Boolean).join(', ');
+                doc.text(nc.substring(0,28),19,ry+rh*.65);
+              }
+              labels.forEach((_,ci)=>doc.rect(12+nw+ci*cw,ry,cw,rh,'FD'));
+            }
+            if(pi<2)doc.addPage();
+          });
+          doc.addPage();
+        }
+
+        // ASISTENCIA
+        if(s.id==='asist'){
+          secT('CONTROL DE ASISTENCIA','Mes: ___________   ·   Curso: _______   ·   '+anio);
+          const nrows=35,ndays=31,nw=50,dw=(W-24-nw)/ndays,topY=24,rh=(H-40)/nrows;
+          for(let d=0;d<ndays;d++){
+            const bx=12+nw+d*dw;sf(pal.bg);doc.rect(bx,topY,dw,5,'F');
+            st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(4.5);
+            doc.text(String(d+1),bx+dw/2,topY+3.5,{align:'center'});
+          }
+          for(let ri=0;ri<nrows;ri++){
+            const ry=topY+5+ri*rh;
+            const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);
+            ss('#DDD');doc.setLineWidth(.2);
+            doc.rect(12,ry,6,rh,'FD');
+            st('#AAA');doc.setFont('helvetica','normal');doc.setFontSize(5);
+            doc.text(String(ri+1),15,ry+rh*.65,{align:'center'});
+            doc.rect(18,ry,nw-6,rh,'FD');
+            if(this.alumnos[ri]){
+              st('#333');doc.setFont('helvetica','normal');doc.setFontSize(6);
+              const nc=[this.alumnos[ri].apellidos,this.alumnos[ri].nombre].filter(Boolean).join(', ');
+              doc.text(nc.substring(0,26),19,ry+rh*.65);
+            }
+            for(let d=0;d<ndays;d++)doc.rect(12+nw+d*dw,ry,dw,rh,'FD');
+          }
+          doc.addPage();
+        }
+
+        // REUNIÓN
+        if(s.id==='reun'){
+          ['REUNIÓN DE CLAUSTRO','TUTORÍA — ENTREVISTA A FAMILIAS'].forEach((tipo,ti)=>{
+            secT(tipo);
+            let my=30;
+            [['Curso:','Ciclo:','Evaluación:'],['Fecha:','Hora:','']].forEach(row=>{
+              const fw=(W-24)/3;
+              row.forEach((l,ci)=>{
+                if(!l)return;
+                const x=12+ci*fw;
+                st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(l,x,my);
+                ss('#CCC');doc.setLineWidth(.4);doc.line(x+18,my+2,x+fw-4,my+2);
+              }); my+=10;
+            });
+            [['Temas a tratar',38],['Desarrollo',60],['Conclusiones',50]].forEach(([t,bh])=>{
+              my+=4;st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(t,12,my);my+=4;
+              sf('#FFF');ss('#DDD');doc.setLineWidth(.4);doc.rect(12,my,W-24,bh,'FD');
+              for(let i=0;i<Math.floor(bh/7)-1;i++)dot(14,my+8+i*7,W-14,my+8+i*7);
+              my+=bh+4;
+            });
+            if(ti===0)doc.addPage();
+          });
+          doc.addPage();
+        }
+
+        // OBJETIVOS
+        if(s.id==='obj'){
+          secT('OBJETIVOS ANUALES  '+anio);
+          ['1er Trimestre','2do Trimestre','3er Trimestre'].forEach((tr,ti)=>{
+            const ty=30+ti*85;
+            const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);
+            doc.rect(12,ty,W-24,6,'F');
+            st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text(tr,14,ty+4.5);
+            for(let i=0;i<10;i++){
+              const ly=ty+10+i*7;
+              sf('#FFF');ss('#DDD');doc.setLineWidth(.25);doc.circle(15,ly+2,2,'FD');dot(20,ly+2,W-14,ly+2);
+            }
+          });
+          doc.addPage();
+        }
+
+        // FECHAS IMPORTANTES
+        if(s.id==='fech'){
+          secT('FECHAS IMPORTANTES  '+anio);
+          const months=['Septiembre','Octubre','Noviembre','Diciembre','Enero','Febrero',
+                        'Marzo','Abril','Mayo','Junio','Julio','Agosto'];
+          const cols2=4,cw2=(W-24)/cols2,rows2=3,ch2=(H-36)/rows2;
+          months.forEach((m,i)=>{
+            const cx=12+(i%cols2)*cw2,cy=24+Math.floor(i/rows2)*ch2;
+            const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);
+            doc.rect(cx,cy,cw2-2,5,'F');
+            st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7);doc.text(m,cx+2,cy+3.5);
+            sf('#FFF');ss('#DDD');doc.setLineWidth(.3);doc.rect(cx,cy+5,cw2-2,ch2-7,'FD');
+            for(let li=0;li<7;li++)dot(cx+2,cy+12+li*9,cx+cw2-4,cy+12+li*9);
+          });
+          doc.addPage();
+        }
+
+        // CHECKLIST
+        if(s.id==='chk'){
+          secT('LISTA DE TAREAS');
+          const cw2=(W-24)/2;
+          for(let col=0;col<2;col++){
+            const x=12+col*cw2;
+            for(let i=0;i<20;i++){
+              const y=28+i*12;
+              ss(pal.bg);sf('#FFF');doc.setLineWidth(.7);doc.roundedRect(x,y,4,4,.5,.5,'FD');
+              dot(x+6,y+2,x+cw2-18,y+2);
+              ss('#CCC');doc.setLineWidth(.3);doc.rect(x+cw2-16,y-.5,14,5,'D');
+              st('#BBB');doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.text('fecha',x+cw2-15.5,y+3);
+            }
+          }
+          doc.addPage();
+        }
+
+        // COMUNICACIONES
+        if(s.id==='com'){
+          secT('COMUNICACIONES CON FAMILIAS  '+anio);
+          const headers=['Fecha','Alumno/a','Familia','Motivo','Resumen / Acuerdos'];
+          const widths=[20,35,45,30,W-24-20-35-45-30];
+          let hx=12;
+          headers.forEach((h,i)=>{
+            sf(pal.bg);doc.rect(hx,24,widths[i],6,'F');
+            st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(6);
+            doc.text(h,hx+widths[i]/2,27.5,{align:'center'});hx+=widths[i];
+          });
+          for(let ri=0;ri<20;ri++){
+            const ry=30+ri*10;
+            const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];
+            let rx=12;
+            widths.forEach(w=>{doc.setFillColor(r,g,b);ss('#DDD');doc.setLineWidth(.25);doc.rect(rx,ry,w,10,'FD');rx+=w;});
+          }
+          doc.addPage();
+        }
+
+        // INVENTARIO
+        if(s.id==='inv'){
+          secT('INVENTARIO DEL AULA  '+anio);
+          const cats=['Material de escritura','Material plástico','Tecnología','Libros y recursos','Otros'];
+          let iy=26;
+          cats.forEach(cat=>{
+            const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);doc.rect(12,iy,W-24,5,'F');
+            st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(cat,14,iy+3.5);iy+=5;
+            const hw=[80,25,30,W-24-80-25-30];let hx=12;
+            hw.forEach((w,i)=>{
+              sf(pal.bg);doc.rect(hx,iy,w,4.5,'F');
+              st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(6);
+              doc.text(['Artículo','Cant.','Estado','Obs.'][i],hx+w/2,iy+3.2,{align:'center'});hx+=w;
+            });iy+=4.5;
+            for(let ri=0;ri<4;ri++){
+              const[r2,g2,b2]=ri%2===0?[245,248,250]:[255,255,255];doc.setFillColor(r2,g2,b2);
+              let rx=12;
+              hw.forEach(w=>{ss('#DDD');doc.setLineWidth(.2);doc.rect(rx,iy,w,5,'FD');rx+=w;});iy+=5;
+            }iy+=4;
+          });
+          doc.addPage();
+        }
+
+        // NOTAS LIBRES
+        if(s.id==='libre'){
+          secT('NOTAS LIBRES');
+          doc.setDrawColor(225,225,225);doc.setLineWidth(.3);
+          for(let x=12;x<=W-12;x+=5)doc.line(x,24,x,H-12);
+          for(let y=24;y<=H-12;y+=5)doc.line(12,y,W-12,y);
+          doc.addPage();
+        }
+      }
+
+      setP(97,'Finalizando…');
+      doc.deletePage(doc.internal.getNumberOfPages());
+      await new Promise(r=>setTimeout(r,30));
+      setP(100,'¡Listo!');
+      doc.save(`cuaderno_${nom.replace(/\s+/g,'_').toLowerCase()}_${anio.replace(/\s/g,'')}.pdf`);
+      await new Promise(r=>setTimeout(r,900));
+      this.generating=false; this.pPct=0;
+    },
+
+    // ── NOTAS STATE ─────────────────────────────────────────────────────
+    etapa: 1,
+    etapaLabels: ['1° Cuatrimestre','2° Cuatrimestre','Etapa Integradora','Resumen Final'],
+    nEt3: 2,
+    showMat: false,
+    showAlInput: false,
+    alTexto: '',
+    materias: ['Matemáticas','Lengua','Cs. Naturales','Cs. Sociales'],
+    notas: {},
+
+    get promGrupoGeneral() {
+      if(!this.alumnos.length)return 0;
+      const ps=this.alumnos.map((_,ai)=>this.promGen(ai)).filter(p=>p>0);
+      return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;
+    },
+    get promGrupoFinal() {
+      if(!this.alumnos.length)return 0;
+      const ps=this.alumnos.map((_,ai)=>this.promFinalAl(ai)).filter(p=>p>0);
+      return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;
+    },
+    get statsCards() {
+      if(!this.alumnos.length)return[];
+      const ps=this.alumnos.map((_,ai)=>this.promFinalAl(ai)).filter(p=>p>0);
+      const ap=ps.filter(p=>p>=6).length, ri=ps.filter(p=>p>=4&&p<6).length,
+            ds=ps.filter(p=>p<4&&p>0).length, mx=ps.length?Math.max(...ps):0;
+      return [
+        {label:'Aprobados', val:ap||'—', icon:'✅', bg:'#dcfce7', color:'text-green-600', sub:`de ${this.alumnos.length}`},
+        {label:'En riesgo',  val:ri||'—', icon:'⚠️', bg:'#fef3c7', color:'text-yellow-600', sub:'entre 4 y 5.9'},
+        {label:'Desaprobados',val:ds||'—', icon:'❌', bg:'#fee2e2', color:'text-red-600',   sub:'menos de 4'},
+        {label:'Mejor nota', val:mx>0?mx.toFixed(1):'—', icon:'🏆', bg:'#D6EEF2', color:'text-teal', sub:'promedio más alto'},
+      ];
+    },
+
+    initN(ai) {
+      if(!this.notas[ai])this.notas[ai]={};
+      this.materias.forEach((_,mi)=>{
+        if(!this.notas[ai][mi])this.notas[ai][mi]={};
+        [1,2,3].forEach(e=>{ if(!this.notas[ai][mi][e])this.notas[ai][mi][e]={}; });
+      });
+    },
+    getNota(ai,mi,ni) {
+      this.initN(ai);
+      return this.notas[ai]?.[mi]?.[this.etapa]?.[ni]??'';
+    },
+    setNota(ai,mi,ni,val) {
+      this.initN(ai);
+      if(!this.notas[ai][mi][this.etapa])this.notas[ai][mi][this.etapa]={};
+      const v=val===''?'':(Math.min(10,Math.max(0,parseFloat(val)||0)));
+      this.notas[ai][mi][this.etapa][ni]=v===''?'':v;
+    },
+    notaCls(v) {
+      if(v===''||v===null||v===undefined)return'';
+      const n=parseFloat(v);
+      return n>=7?'nota-ok':n>=4?'nota-warn':'nota-bad';
+    },
+    promCls(v) {
+      if(!v||v<=0)return'prom-empty';
+      return v>=7?'prom-ok':v>=4?'prom-warn':'prom-bad';
+    },
+    promMat(ai,mi) {
+      this.initN(ai);
+      const nc=this.etapa===3?this.nEt3:4,vals=[];
+      for(let ni=0;ni<nc;ni++){
+        const v=this.notas[ai]?.[mi]?.[this.etapa]?.[ni];
+        if(v!==''&&v!==null&&v!==undefined)vals.push(parseFloat(v));
+      }
+      return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+    },
+    promEtapa(ai,mi,et) {
+      this.initN(ai);
+      const nc=et===3?this.nEt3:4,vals=[];
+      for(let ni=0;ni<nc;ni++){
+        const v=this.notas[ai]?.[mi]?.[et]?.[ni];
+        if(v!==''&&v!==null&&v!==undefined)vals.push(parseFloat(v));
+      }
+      return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+    },
+    promGen(ai) {
+      const ps=this.materias.map((_,mi)=>this.promMat(ai,mi)).filter(p=>p>0);
+      return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;
+    },
+    promMatFinal(ai,mi) {
+      const ps=[1,2,3].map(e=>this.promEtapa(ai,mi,e)).filter(p=>p>0);
+      return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;
+    },
+    promFinalAl(ai) {
+      const ps=this.materias.map((_,mi)=>this.promMatFinal(ai,mi)).filter(p=>p>0);
+      return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;
+    },
+    promGrupoMat(mi) {
+      const ps=this.alumnos.map((_,ai)=>this.promMat(ai,mi)).filter(p=>p>0);
+      return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;
+    },
+    promGrupoMatFinal(mi) {
+      const ps=this.alumnos.map((_,ai)=>this.promMatFinal(ai,mi)).filter(p=>p>0);
+      return ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:0;
+    },
+
+    cargarAlTexto() {
+      const lines=this.alTexto.split('\n').map(l=>l.trim()).filter(l=>l);
+      this.alumnos=lines.map(l=>{
+        const p=l.split(',');
+        return p.length>=2?{apellidos:p[0].trim(),nombre:p[1].trim()}:{apellidos:l,nombre:''};
+      });
+      this.notas={}; this.showAlInput=false;
+    },
+
+    cargarDemo() {
+      this.alumnos=[
+        {apellidos:'García',nombre:'María'},{apellidos:'Rodríguez',nombre:'Lucas'},
+        {apellidos:'Martínez',nombre:'Sofía'},{apellidos:'López',nombre:'Joaquín'},
+        {apellidos:'Fernández',nombre:'Valentina'},{apellidos:'González',nombre:'Mateo'},
+        {apellidos:'Pérez',nombre:'Camila'},{apellidos:'Sánchez',nombre:'Benjamín'},
+      ];
+      this.notas={};
+      const rnd=(...args)=>{let x=Math.sin(args.reduce((a,b)=>a+b,0))*10000;return x-Math.floor(x);};
+      this.alumnos.forEach((_,ai)=>{
+        this.initN(ai);
+        this.materias.forEach((_,mi)=>{
+          [1,2].forEach(et=>{
+            if(!this.notas[ai][mi][et])this.notas[ai][mi][et]={};
+            for(let ni=0;ni<4;ni++)
+              this.notas[ai][mi][et][ni]=parseFloat(Math.min(10,Math.max(1,(rnd(ai+1,mi+1,et,ni)*5+5.5))).toFixed(1));
+          });
+          if(!this.notas[ai][mi][3])this.notas[ai][mi][3]={};
+          for(let ni=0;ni<2;ni++)
+            this.notas[ai][mi][3][ni]=parseFloat(Math.min(10,Math.max(1,(rnd(ai+1,mi+1,3,ni)*4+6))).toFixed(1));
+        });
+      });
+      this.showAlInput=false;
+    },
+
+    exportNotasXlsx() {
+      const wb=XLSX.utils.book_new();
+      this.etapaLabels.slice(0,3).forEach((etLabel,etIdx)=>{
+        const et=etIdx+1,nc=et===3?this.nEt3:4;
+        const h1=['Alumno/a'],h2=[''];
+        this.materias.forEach(m=>{
+          for(let ni=0;ni<nc;ni++){h1.push(m||'Materia');h2.push('Nota '+(ni+1));}
+          h1.push(m||'Materia');h2.push('Promedio');
+        });
+        h1.push('PROM. GENERAL');h2.push('');
+        const rows=[h1,h2];
+        this.alumnos.forEach((al,ai)=>{
+          const row=[al.apellidos?al.apellidos+', '+al.nombre:String(al)];
+          this.materias.forEach((_,mi)=>{
+            for(let ni=0;ni<nc;ni++){
+              const v=this.notas[ai]?.[mi]?.[et]?.[ni];
+              row.push(v!==''&&v!=null?v:'');
+            }
+            const p=this.promEtapa(ai,mi,et);
+            row.push(p>0?parseFloat(p.toFixed(2)):'');
+          });
+          const pg=this.promGen(ai);
+          row.push(pg>0?parseFloat(pg.toFixed(2)):'');
+          rows.push(row);
+        });
+        const grupoRow=['Promedio grupo'];
+        this.materias.forEach((_,mi)=>{
+          for(let ni=0;ni<nc;ni++)grupoRow.push('');
+          const p=this.promGrupoMat(mi);grupoRow.push(p>0?parseFloat(p.toFixed(2)):'');
+        });
+        grupoRow.push(this.promGrupoGeneral>0?parseFloat(this.promGrupoGeneral.toFixed(2)):'');
+        rows.push(grupoRow);
+        const ws=XLSX.utils.aoa_to_sheet(rows);
+        ws['!cols']=[{wch:24},...Array(rows[0].length-1).fill({wch:11})];
+        XLSX.utils.book_append_sheet(wb,ws,etLabel);
+      });
+      // Resumen final
+      const hF=['Alumno/a',...this.materias.map(m=>m||'Materia'),'PROMEDIO FINAL'];
+      const rowsF=[hF];
+      this.alumnos.forEach((al,ai)=>{
+        const row=[al.apellidos?al.apellidos+', '+al.nombre:String(al)];
+        this.materias.forEach((_,mi)=>{
+          const p=this.promMatFinal(ai,mi);row.push(p>0?parseFloat(p.toFixed(2)):'');
+        });
+        const pf=this.promFinalAl(ai);row.push(pf>0?parseFloat(pf.toFixed(2)):'');
+        rowsF.push(row);
+      });
+      const wsF=XLSX.utils.aoa_to_sheet(rowsF);
+      wsF['!cols']=[{wch:24},...Array(rowsF[0].length-1).fill({wch:14})];
+      XLSX.utils.book_append_sheet(wb,wsF,'Resumen Final');
+      XLSX.writeFile(wb,`notas_${new Date().toLocaleDateString('es-AR').replace(/\//g,'-')}.xlsx`);
+    },
+
+    init() {
+      this.$nextTick(initLucide);
+    }
+  }
+}
+</script>
+</body>
+</html>
