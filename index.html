@@ -272,8 +272,8 @@ tailwind.config = {
       </div>
       <input x-model="adminKey" type="password"
         @keydown.enter="doAdminLogin()"
-        class="code-input mb-4" style="letter-spacing:2px;font-size:1rem"
-        placeholder="Contraseña de admin">
+        class="code-input mb-4" style="letter-spacing:2px;font-size:1rem;background:rgba(255,255,255,0.15);color:white;"
+        placeholder="Contrasena de admin">
       <p x-show="adminErr" class="text-red-400 text-xs mb-3" x-text="adminErr"></p>
       <button @click="doAdminLogin()" class="btn-login mb-3">
         Entrar al panel
@@ -327,19 +327,19 @@ tailwind.config = {
       <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
         <div class="md:col-span-2">
           <label class="text-xs text-gray-400 uppercase tracking-wider block mb-1.5">Nombre del docente</label>
-          <input x-model="newUser.nombre" placeholder="Ej: María García"
-            class="w-full px-3 py-2.5 bg-white/8 border border-white/15 rounded-xl text-white text-sm placeholder-gray-500 focus:outline-none focus:border-teal-mid">
+          <input x-model="newUser.nombre" placeholder="Ej: Maria Garcia"
+            class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-teal-mid">
         </div>
         <div>
           <label class="text-xs text-gray-400 uppercase tracking-wider block mb-1.5">Email (opcional)</label>
           <input x-model="newUser.email" placeholder="profe@mail.com"
-            class="w-full px-3 py-2.5 bg-white/8 border border-white/15 rounded-xl text-white text-sm placeholder-gray-500 focus:outline-none focus:border-teal-mid">
+            class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-teal-mid">
         </div>
         <div>
           <label class="text-xs text-gray-400 uppercase tracking-wider block mb-1.5">C&oacute;digo (o generar)</label>
           <div class="flex gap-2">
             <input x-model="newUser.codigo" placeholder="AUTO"
-              class="flex-1 px-3 py-2.5 bg-white/8 border border-white/15 rounded-xl text-white text-sm font-mono placeholder-gray-500 focus:outline-none focus:border-teal-mid uppercase"
+              class="flex-1 px-3 py-2.5 bg-white border border-gray-300 rounded-xl text-gray-900 text-sm font-mono font-bold placeholder-gray-400 focus:outline-none focus:border-teal-mid uppercase"
               @input="newUser.codigo=$event.target.value.toUpperCase()">
             <button @click="newUser.codigo=genCode()"
               class="px-3 py-2.5 bg-teal/40 hover:bg-teal/60 rounded-xl text-teal-mid text-xs font-bold transition-colors">
@@ -1343,7 +1343,7 @@ function mainApp() {
       this.generating = true;
       const sp = (p,l) => { this.pPct=p; this.pLabel=l; };
       try {
-      sp(3,'Iniciando…');
+      sp(3,'Iniciando...');
       await new Promise(r=>setTimeout(r,60));
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
@@ -1358,7 +1358,7 @@ function mainApp() {
       const dot=(x1,y1,x2,y2)=>{ss('#DDDDDD');doc.setLineWidth(.3);doc.setLineDashPattern([1,2],0);doc.line(x1,y1,x2,y2);doc.setLineDashPattern([],0);};
       const secT=(txt,sub='')=>{st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(txt,12,18);if(sub){doc.setFontSize(7);doc.setFont('helvetica','normal');st('#888');doc.text(sub,W/2,18,{align:'center'});}sf(pal.bg);doc.rect(12,20,W-24,.5,'F');};
 
-      sp(8,'Portada…');
+      sp(8,'Portada...');
       if(this.selCover==='custom'&&this.customImgData){
         doc.addImage(this.customImgData,'JPEG',0,0,W,H);
         doc.setGState(doc.GState({opacity:.72}));sf('#000000');doc.rect(0,H*.58,W,H*.42,'F');doc.setGState(doc.GState({opacity:1}));
@@ -1375,11 +1375,11 @@ function mainApp() {
         doc.setFont('helvetica','normal');doc.setFontSize(52);doc.text('de profe',W/2,H*.56,{align:'center'});
         doc.setFontSize(17);doc.text(anio,W/2,H*.64,{align:'center'});
         if(nom){doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text(nom,W/2,H*.74,{align:'center'});}
-        if(esc||mat){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text([esc,mat].filter(Boolean).join('  ·  '),W/2,H*.79,{align:'center'});}
+        if(esc||mat){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text([esc,mat].filter(Boolean).join('  -  '),W/2,H*.79,{align:'center'});}
       }
       doc.addPage();
 
-      sp(13,'Datos…');
+      sp(13,'Datos...');
       await new Promise(r=>setTimeout(r,40));
       sf(pal.light);doc.rect(0,0,7,H,'F');sf(pal.bg);doc.rect(0,H-10,W,10,'F');
       st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('DATOS DEL/LA DOCENTE',12,22);
@@ -1396,7 +1396,7 @@ function mainApp() {
       const active=this.secs.filter(s=>s.on);
       for(let si=0;si<active.length;si++){
         const s=active[si];
-        sp(14+Math.round(si/active.length*78),`Generando: ${s.name}…`);
+        sp(14+Math.round(si/active.length*78),`Generando: ${s.name}...`);
         await new Promise(r=>setTimeout(r,50));
 
         if(s.id==='cal'){
@@ -1413,7 +1413,7 @@ function mainApp() {
           doc.addPage();
         }
         if(s.id==='sem'){
-          secT('PLANIFICACION SEMANAL','Semana del _______ al _______   ·   Mes: ___________');
+          secT('PLANIFICACION SEMANAL','Semana del __ al __  - Mes: _______');
           const days=['lunes','martes','miercoles','jueves','viernes'],cw=(W-24)/5,topY=26,botY=H-30;
           days.forEach((d,i)=>{const bx=12+i*cw;sf(pal.bg);doc.rect(bx,topY,cw-1.5,6,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(d,bx+(cw-1.5)/2,topY+4.2,{align:'center'});sf('#FFF');ss('#DDD');doc.setLineWidth(.35);doc.rect(bx,topY+6,cw-1.5,botY-topY-6,'FD');let ly=topY+12;while(ly<botY-4){dot(bx+1,ly,bx+cw-3,ly);ly+=6;}});
           ['sabado','domingo'].forEach((d,i)=>{const bx=12+i*(W-24)/2,sw=(W-24)/2;const[r,g,b]=h2r(pal.light);doc.setFillColor(r,g,b);doc.rect(bx,botY+2,sw-1.5,6,'F');st(pal.bg);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.text(d,bx+(sw-1.5)/2,botY+5.8,{align:'center'});sf('#FFF');ss('#DDD');doc.setLineWidth(.35);doc.rect(bx,botY+8,sw-1.5,20,'FD');});
@@ -1440,7 +1440,7 @@ function mainApp() {
         }
         if(s.id==='notas'){
           ['1a','2a','3a'].forEach((ev,pi)=>{
-            secT(`REGISTRO DE NOTAS  —  ${ev} EVALUACION`,`Asignatura: ${mat||'___________'}   ·   Ano: ${anio}`);
+            secT('REGISTRO DE NOTAS - '+ev+' EVALUACION','Asignatura: '+(mat||'___________')+' - '+anio);
             const labels=['Trabajos','Tareas','Ctrl 1','Ctrl 2','Examen','Actitud','Nota Final','Recup.'],nw=50,cw=(W-24-nw)/labels.length,topY=30,nrows=35,rh=(H-46)/nrows;
             labels.forEach((l,ci)=>{const bx=12+nw+ci*cw;sf(ci<6?pal.bg:pal.acc);doc.rect(bx,topY,cw,6,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(5);doc.text(l,bx+cw/2,topY+4.2,{align:'center'});});
             for(let ri=0;ri<nrows;ri++){const ry=topY+6+ri*rh;const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);ss('#DDD');doc.setLineWidth(.2);doc.rect(12,ry,6,rh,'FD');st('#AAA');doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.text(String(ri+1),15,ry+rh*.65,{align:'center'});doc.rect(18,ry,nw-6,rh,'FD');if(this.alumnos[ri]){st('#333');doc.setFont('helvetica','normal');doc.setFontSize(6);const nc=[this.alumnos[ri].apellidos,this.alumnos[ri].nombre].filter(Boolean).join(', ');doc.text(nc.substring(0,28),19,ry+rh*.65);}labels.forEach((_,ci)=>doc.rect(12+nw+ci*cw,ry,cw,rh,'FD'));}
@@ -1449,7 +1449,7 @@ function mainApp() {
           doc.addPage();
         }
         if(s.id==='asist'){
-          secT('CONTROL DE ASISTENCIA','Mes: ___________   ·   Curso: _______   ·   '+anio);
+          secT('CONTROL DE ASISTENCIA','Mes: ___________  - Curso: _______  - '+anio);
           const nrows=35,ndays=31,nw=50,dw=(W-24-nw)/ndays,topY=24,rh=(H-40)/nrows;
           for(let d=0;d<ndays;d++){const bx=12+nw+d*dw;sf(pal.bg);doc.rect(bx,topY,dw,5,'F');st('#FFF');doc.setFont('helvetica','bold');doc.setFontSize(4.5);doc.text(String(d+1),bx+dw/2,topY+3.5,{align:'center'});}
           for(let ri=0;ri<nrows;ri++){const ry=topY+5+ri*rh;const[r,g,b]=ri%2===0?h2r(pal.light):[255,255,255];doc.setFillColor(r,g,b);ss('#DDD');doc.setLineWidth(.2);doc.rect(12,ry,6,rh,'FD');st('#AAA');doc.setFont('helvetica','normal');doc.setFontSize(5);doc.text(String(ri+1),15,ry+rh*.65,{align:'center'});doc.rect(18,ry,nw-6,rh,'FD');if(this.alumnos[ri]){st('#333');doc.setFont('helvetica','normal');doc.setFontSize(6);const nc=[this.alumnos[ri].apellidos,this.alumnos[ri].nombre].filter(Boolean).join(', ');doc.text(nc.substring(0,26),19,ry+rh*.65);}for(let d=0;d<ndays;d++)doc.rect(12+nw+d*dw,ry,dw,rh,'FD');}
@@ -1496,7 +1496,7 @@ function mainApp() {
         }
       }
 
-      sp(97,'Finalizando…');
+      sp(97,'Finalizando...');
       doc.deletePage(doc.internal.getNumberOfPages());
       await new Promise(r=>setTimeout(r,30));
       sp(100,'¡Listo!');
